@@ -12,7 +12,12 @@ import {
 
 import { useLocation } from 'react-router-dom';
 import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
-import './Menu.css';
+import './Menu.scss';
+import { SupabaseAuthService } from '../Login/supabase.auth.service';
+import { useEffect, useState } from 'react';
+import { User } from '@supabase/supabase-js';
+
+const supabaseAuthService = new SupabaseAuthService();
 
 interface AppPage {
   url: string;
@@ -46,31 +51,41 @@ const appPages: AppPage[] = [
     iosIcon: archiveOutline,
     mdIcon: archiveSharp
   },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
-  }
 ];
 
 const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FC = () => {
   const location = useLocation();
+  let _user: User | null = null;
+  const [email, setEmail] = useState('');
+
+  const signOut = async () => {
+    const { error } = await supabaseAuthService.signOut();
+    if (error) {
+      console.error('Error signing out', error);
+    }
+  };
+
+  useEffect(() => {
+    // Only run this one time!  No multiple subscriptions!
+    supabaseAuthService.user.subscribe((user: User | null) => {
+      _user = user;
+      if (_user?.email) {
+        setEmail(_user.email);
+      } else {
+        setEmail('');
+      }
+    });
+  }, []); // <-- empty dependency array
+
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonListHeader>Educator</IonListHeader>
+          <IonNote>{email}</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
