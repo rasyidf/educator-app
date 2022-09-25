@@ -20,7 +20,8 @@ jobs:
     - name: Install NPM Modules
       run: |
         npm i -D -E @ionic/cli
-        npm install
+        npm i -g pnpm
+        pnpm i
     - name: Build
       run: |
         ionic build --prod -- --base-href 'https://rasyid.dev/educator-app/'
