@@ -19,7 +19,6 @@ jobs:
 
     - name: Install NPM Modules
       run: |
-        npm i -g @ionic/cli
         npm i -g pnpm
         pnpm i
     - name: Build
