@@ -28,6 +28,7 @@
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "cordova-plugin-lottie-splashscreen": "^0.9.6",
+    "gh-pages": "^4.0.0",
     "ionicons": "^6.0.3",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
@@ -55,7 +56,8 @@
     "ionic:build": "craco build",
     "ionic:serve": "craco start",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "ionic build --prod -- --base-href https://github.com/rasyidf/educator-app"
   },
   "eslintConfig": {
     "extends": [
