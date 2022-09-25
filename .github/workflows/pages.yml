@@ -1,0 +1,46 @@
+name: github pages
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Cache node_modules
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-npm-cache-${{ env.cache-name }}-
+          ${{ runner.OS }}-npm-cache-
+    - name: Cache next build
+      uses: actions/cache@v1
+      with:
+        path: .next/cache
+        key: ${{ runner.OS }}-next-build-cache-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-next-build-cache-${{ env.cache-name }}-
+          ${{ runner.OS }}-next-build-cache-
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: build, and export
+      run: |
+        yarn ionic:build web
+        touch build/.nojekyll
+      env:
+        CI: true
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3.8.0 
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }} 
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./build
