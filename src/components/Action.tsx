@@ -7,7 +7,7 @@ export const Action = (props: { message: string | number | boolean | ReactElemen
         <IonCol size="12">
             <p>
                 {props.message}
-                <IonRouterLink className="custom-link" routerLink={props.link}> {props.text} &rarr;</IonRouterLink>
+                <IonRouterLink className="custom-link" routerLink={props.link}> {props.text} </IonRouterLink>
             </p>
         </IonCol>
     </IonRow>

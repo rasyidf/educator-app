@@ -3,14 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@awesome-cordova-plugins/core": "^5.45.0",
+    "@awesome-cordova-plugins/lottie-splash-screen": "^5.45.0",
     "@capacitor/android": "4.2.0",
     "@capacitor/app": "4.0.1",
+    "@capacitor/camera": "^4.1.1",
     "@capacitor/core": "4.2.0",
     "@capacitor/haptics": "4.0.1",
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
+    "@craco/craco": "^6.4.5",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
+    "@lottiefiles/react-lottie-player": "^3.4.7",
     "@supabase/gotrue-js": "^1.22.22",
     "@supabase/supabase-js": "^1.35.6",
     "@testing-library/jest-dom": "^5.11.9",
@@ -22,7 +27,9 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "cordova-plugin-lottie-splashscreen": "^0.9.6",
     "ionicons": "^6.0.3",
+    "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^5.2.0",
@@ -45,8 +52,8 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "ionic:build": "craco build",
+    "ionic:serve": "craco start",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject"
   },
@@ -69,8 +76,15 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": ">=7.0.0-0 <8.0.0",
+    "@babel/plugin-syntax-flow": "^7.14.5",
+    "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@capacitor/cli": "4.2.0",
-    "sass": "^1.54.9"
+    "@testing-library/dom": ">=7.21.4",
+    "autoprefixer": "^9",
+    "postcss": "^7",
+    "sass": "^1.54.9",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   },
   "description": "An Ionic project"
 }

@@ -1,0 +1,27 @@
+ion-button {
+    // mantine button
+    @apply text-sm text-gray-800;
+    @apply border border-gray-300;
+    @apply rounded-md;
+    @apply focus:outline-none focus:ring-1 focus:ring-blue-600;
+    @apply bg-white;
+}
+
+ion-input {
+    @apply text-sm text-gray-500;
+    @apply border border-gray-300;
+    @apply rounded-md;
+    @apply py-2 px-3;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent;
+}
+
+ion-item { 
+    --highlight-height: 0px;
+    --highlight-color: transparent;
+    --border-width: 0px;
+    ion-input {
+        @apply text-sm text-gray-500 my-5 px-2;
+
+    }
+    --border-color: transparent;
+}

@@ -4,7 +4,6 @@ import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Page from './pages/Page';
 import Login from './Login/Login';
-import LoginAlt from './Login/Login-alt';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -23,10 +22,13 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import './theme/variables.scss';
 
 import { StartupService } from './services/startup.service';
 import ResetPassword from './Login/ResetPassword';
+import Signup from './Login/Signup';
+import { AccountPage } from './pages/Account';
+import HomePage from './pages/Home';
 const startupService = new StartupService();
 const startupRoute = startupService.getStartupRoute();
 setupIonicReact();
@@ -39,15 +41,20 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
-              <Redirect to={startupRoute || '/page/inbox'} /> {/*"/page" /> */}
+              <Redirect to={startupRoute || '/home'} />  
+            </Route>
+            <Route path="/home" exact>
+              <HomePage />
             </Route>
             <Route path="/page/:name" exact={true}>
               <Page />
             </Route>
-            <Route path="/page" exact={true} component={Page} />
             <Route path="/login" component={Login} />
-            <Route path="/login-2" component={LoginAlt} />
+            <Route path="/signup" component={Signup} />
             <Route path="/resetpassword/:token" component={ResetPassword} />
+            <Route exact path="/account">
+              <AccountPage />
+            </Route>
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>

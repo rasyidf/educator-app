@@ -1,0 +1,26 @@
+.avatar {
+	display: block;
+	margin: auto;
+	min-height: 150px;
+}
+
+.avatar .avatar_wrapper { 
+	height: 150px;
+	aspect-ratio: 1; 
+	// convert above to tailwind apply
+	@apply border-8 border-gray-100 rounded-full overflow-hidden bg-gray-50;
+	@apply mx-auto my-4;
+}
+
+.avatar .avatar_wrapper:hover {
+	@apply cursor-pointer border-gray-200 bg-gray-100;
+}
+
+.avatar .avatar_wrapper ion-icon.no-avatar {
+	width: 100%;
+	height: 115%;
+}
+
+.avatar img {
+	@apply object-cover w-full h-full rounded-full;
+}

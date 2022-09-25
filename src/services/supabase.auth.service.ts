@@ -1,6 +1,6 @@
 import { createClient, Provider, SupabaseClient, User } from '@supabase/supabase-js';
 import { BehaviorSubject } from 'rxjs';
-import { keys } from '../services/keys.service';
+import { keys } from './keys.service';
 
 const supabase: SupabaseClient = createClient(keys.SUPABASE_URL, keys.SUPABASE_KEY);
 
@@ -88,5 +88,13 @@ export class SupabaseAuthService {
       this.user.next(null);
     }
     return { error };
+  };
+
+  public getProfile = async () => {
+    return await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', this._user?.id)
+      .single();
   };
 }

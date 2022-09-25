@@ -1,22 +1,21 @@
-import {
-    IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid,
-    IonHeader, IonIcon, IonInput, IonLabel, IonMenuButton, IonPage, IonRow,
-    IonTitle, IonToolbar, useIonToast
-} from '@ionic/react';
-import { link, logIn, personAdd, refreshCircle } from 'ionicons/icons';
-import { useState } from 'react';
-import './Login.css';
+import { IonBackButton, IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonToolbar, useIonRouter, useIonToast } from "@ionic/react";
+import styles from "./Login.module.scss";
 
-
-import ProviderSignInButton from './ProviderSignInButton';
-import { SupabaseAuthService } from './supabase.auth.service';
-import { validateEmail } from './validateEmail';
+import { arrowBack, bookOutline } from "ionicons/icons";
+import CustomField from "../components/CustomField";
+import { useLoginFields } from "../data/fields";
+import { Action } from "../components/Action";
+import { Wave } from "../components/Wave";
+import { useEffect, useState } from "react";
+import { validateForm } from "../data/utils";
+import { useParams } from "react-router";
+import { SupabaseAuthService } from '../services/supabase.auth.service';
+import { Player } from "@lottiefiles/react-lottie-player";
 const supabaseAuthService = new SupabaseAuthService();
 
-const Login: React.FC = () => {
+const Login = () => {
+
     const [present, dismiss] = useIonToast();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const toast = (message: string, color: string = 'danger') => {
         present({
             color: color,
@@ -24,132 +23,77 @@ const Login: React.FC = () => {
             cssClass: 'toast',
             buttons: [{ icon: 'close', handler: () => dismiss() }],
             duration: 6000,
-            //onDidDismiss: () => console.log('dismissed'),
+            onDidDismiss: () => console.log('dismissed'),
             //onWillDismiss: () => console.log('will dismiss'),
         });
     };
-    const signInWithEmail = async () => {
+
+    const params = useParams();
+    const router = useIonRouter();
+    const fields = useLoginFields();
+    const [errors, setErrors] = useState<Record<string, any> | boolean>(false);
+    const signInWithEmail = async (email: string, password: string) => {
         const { user, session, error } =
             await supabaseAuthService.signInWithEmail(email, password);
         if (error) { toast(error.message); }
     };
-    const signUp = async () => {
-        const { user, session, error } =
-            await supabaseAuthService.signUpWithEmail(email, password);
-        if (error) { toast(error.message); }
-        else { toast('Please check your email for a confirmation link', 'success'); }
+    const login = () => {
+
+        const errors = validateForm(fields);
+        setErrors(errors);
+
+        if (!errors.length) {
+            const emailField = fields.find(field => field.id === 'email');
+            const passwordField = fields.find(field => field.id === 'password');
+            signInWithEmail(emailField?.input?.state?.value || "", passwordField?.input?.state?.value || "");
+            router.push('/home');
+        }
     };
-    const resetPassword = async () => {
-        const { data, error } =
-            await supabaseAuthService.resetPassword(email);
-        if (error) { toast(error.message); }
-        else { toast('Please check your email for a password reset link', 'success'); }
-    };
-    const sendMagicLink = async () => {
-        const { user, session, error } =
-            await supabaseAuthService.sendMagicLink(email);
-        if (error) { toast(error.message); }
-    };
+
+    useEffect(() => {
+        return () => {
+            fields.forEach(field => field.input.state.reset(""));
+            setErrors(false);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [params]);
 
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonBackButton defaultHref="/page" />
-                    </IonButtons>
-                    <IonTitle>Login</IonTitle>
-                </IonToolbar>
-            </IonHeader>
+        <IonPage className={styles.loginPage}>
             <IonContent fullscreen>
-                <IonHeader collapse="condense">
-                    <IonToolbar>
-                        <IonTitle size="large">Login Page</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
+                <IonGrid className="ion-padding">
+                    <IonRow>
+                        <IonCol size="12" className={styles.headingText}>
+                            <Player
+                                autoplay
+                                src="https://assets3.lottiefiles.com/packages/lf20_4XmSkB.json"
+                                style={{ height: '200px', width: '300px' }}
+                            >
+                            </Player>
+                            <IonCardTitle>Masuk</IonCardTitle>
+                            <h5>Selamat datang di Educator</h5>
+                        </IonCol>
+                    </IonRow>
 
-                <IonGrid class="ion-padding">
-                    <IonRow>
-                        <IonCol>
-                            <IonLabel><b>Email</b></IonLabel>
+                    <IonRow className="ion-margin-top ion-padding-top">
+                        <IonCol size="12">
+
+                            {fields.map(field => {
+
+                                return <CustomField field={field} errors={errors} />;
+                            })}
+
+                            <IonButton expand="block" fill="clear" onClick={login}>Login</IonButton>
                         </IonCol>
                     </IonRow>
-                    <IonRow>
-                        <IonCol>
-                            <IonInput type="email"
-                                placeholder="Enter your email"
-                                onIonChange={e => setEmail(e.detail.value!)}
-                                value={email} class="inputBox" />
-                        </IonCol>
-                    </IonRow>
-                    {!validateEmail(email) && email.length > 0 &&
-                        <IonRow>
-                            <IonCol>
-                                <IonLabel color="danger"><b>Invalid email format</b></IonLabel>
-                            </IonCol>
-                        </IonRow>
-                    }
-                    <IonRow>
-                        <IonCol>
-                            <IonLabel><b>Password</b></IonLabel>
-                        </IonCol>
-                    </IonRow>
-                    <IonRow>
-                        <IonCol>
-                            <IonInput type="password"
-                                placeholder="Enter your password"
-                                onIonChange={e => setPassword(e.detail.value!)}
-                                value={password} class="inputBox" />
-                        </IonCol>
-                    </IonRow>
-                    {password.length > 0 && password.length < 6 &&
-                        <IonRow>
-                            <IonCol>
-                                <IonLabel color="danger"><b>Password too short</b></IonLabel>
-                            </IonCol>
-                        </IonRow>
-                    }
-                    <IonRow>
-                        <IonCol>
-                            <IonButton expand="block"
-                                disabled={!validateEmail(email) || password.length < 6}
-                                onClick={signInWithEmail}>
-                                <IonIcon icon={logIn} size="large" />&nbsp;&nbsp;
-                                <b>Masuk</b>
-                            </IonButton>
-                        </IonCol>
-                    </IonRow>
-                    <IonRow>
-                        <IonCol>
-                            <IonButton expand="block"
-                                disabled={!validateEmail(email) || password.length < 6}
-                                onClick={signUp}>
-                                <IonIcon icon={personAdd} size="large" />&nbsp;&nbsp;
-                                <b>Daftar</b></IonButton>
-                        </IonCol>
-                        <IonCol>
-                            <IonButton expand="block"
-                                disabled={!validateEmail(email) || password.length > 0}
-                                onClick={resetPassword}>
-                                <IonIcon icon={refreshCircle} size="large" />&nbsp;&nbsp;
-                                <b>Lupa Password</b></IonButton>
+                    <IonRow className="ion-margin-top ion-padding-top">
+                        <IonCol size="12">
+                            <Action message="Belum punya akun?" text="Daftar" link="/signup" />
                         </IonCol>
                     </IonRow>
                 </IonGrid>
-                <IonRow>
-                    <IonCol class="ion-text-center">
-                        <IonLabel><b>Sign in with:</b></IonLabel>
-                    </IonCol>
-                </IonRow>
-                <IonRow>
-                    <IonCol>
-                        <ProviderSignInButton name="google" />
-                    </IonCol>
-                </IonRow>
-             
-
-
             </IonContent>
+
         </IonPage>
     );
 };

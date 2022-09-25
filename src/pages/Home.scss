@@ -1,0 +1,33 @@
+ion-card {
+    // modern card
+    @apply bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200;
+
+    h1 {
+        @apply text-xl font-bold text-gray-600;
+    }
+
+    p {
+        @apply text-gray-500 text-center;
+    }
+
+    ion-card-header {
+        @apply flex items-center justify-center py-6;
+
+        ion-card-subtitle {
+            @apply text-sm text-gray-500;
+        }
+    }
+}
+
+.main-grid {
+    --min-height: 150px;
+
+    ion-card {
+        // card button with center aligned text and icon
+        @apply text-center align-bottom h-full;
+
+        h1 {
+            @apply text-lg text-gray-600;
+        }
+    }
+}

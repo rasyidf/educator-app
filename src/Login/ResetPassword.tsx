@@ -6,7 +6,7 @@ import { useState } from 'react';
 import './ResetPassword.css';
 import { useHistory } from "react-router-dom";
 
-import { SupabaseAuthService } from './supabase.auth.service';
+import { SupabaseAuthService } from '../services/supabase.auth.service';
 import { useParams } from 'react-router';
 
 import { StartupService } from '../services/startup.service';

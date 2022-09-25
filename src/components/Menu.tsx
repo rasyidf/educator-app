@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonContent,
   IonIcon,
   IonItem,
@@ -8,14 +9,15 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
+  useIonRouter
 } from '@ionic/react';
 
-import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
-import './Menu.scss';
-import { SupabaseAuthService } from '../Login/supabase.auth.service';
-import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
+import { archiveOutline, bookOutline, fileTrayOutline, fileTrayStackedOutline, homeOutline, logInOutline, logOutOutline } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { SupabaseAuthService } from '../services/supabase.auth.service';
+import './Menu.scss';
 
 const supabaseAuthService = new SupabaseAuthService();
 
@@ -28,34 +30,39 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    title: "Home",
+    url: "/home",
+    iosIcon: homeOutline,
+    mdIcon: homeOutline,
   },
   {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    title: 'Media Ajar',
+    url: '/page/media',
+    iosIcon: fileTrayStackedOutline,
+    mdIcon: fileTrayStackedOutline
   },
   {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
+    title: 'Alat Evaluasi',
+    url: '/page/evaluasi',
+    iosIcon: fileTrayOutline,
+    mdIcon: fileTrayOutline
   },
   {
-    title: 'Archived',
-    url: '/page/Archived',
+    title: 'RPP',
+    url: '/page/rpp',
+    iosIcon: bookOutline,
+    mdIcon: bookOutline
+  },
+  {
+    title: 'Materi Ajar',
+    url: '/page/material',
     iosIcon: archiveOutline,
-    mdIcon: archiveSharp
+    mdIcon: archiveOutline
   },
 ];
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
 const Menu: React.FC = () => {
+  const router = useIonRouter();
   const location = useLocation();
   let _user: User | null = null;
   const [email, setEmail] = useState('');
@@ -65,6 +72,7 @@ const Menu: React.FC = () => {
     if (error) {
       console.error('Error signing out', error);
     }
+    router.push('/login');
   };
 
   useEffect(() => {
@@ -96,17 +104,23 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
+
+          {email &&
+            <IonButton expand="block" color="white" fill="clear"
+              onClick={signOut}>
+              <IonIcon icon={logOutOutline} size="large" />&nbsp;&nbsp;
+              <b>Logout</b>
+            </IonButton>
+          }
+          {!email &&
+            <IonButton expand="block" color="white" fill="clear"
+              routerLink="/login">
+              <IonIcon icon={logInOutline} size="large" />&nbsp;&nbsp;
+              <b>Login</b>
+            </IonButton>
+          }
         </IonList>
 
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
       </IonContent>
     </IonMenu>
   );
