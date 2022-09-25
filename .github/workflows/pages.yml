@@ -20,10 +20,10 @@ jobs:
     - name: Install NPM Modules
       run: |
         npm i -g pnpm
-        pnpm i
+        CI=false pnpm i
     - name: Build
       run: |
-        ionic build --prod -- --base-href 'https://rasyid.dev/educator-app/'
+        CI=false ionic build --prod -- --base-href 'https://rasyid.dev/educator-app/'
         ls build
 
     - name: Deploy
