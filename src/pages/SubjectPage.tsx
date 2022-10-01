@@ -5,22 +5,16 @@ import { useParams } from 'react-router';
 import { SupabaseAuthService } from '../services/supabase.auth.service';
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useLocation } from 'react-router';
-import './Page.scss';
+import './SubjectPage.scss';
 import { SupabaseDataService } from '../services/supabase.data.service';
 import { Link } from 'react-router-dom';
 const sbDataService = new SupabaseDataService();
 const supabaseAuthService = new SupabaseAuthService();
 let _user: User | null = null;
-const nameToHeader: Record<string, string> = {
-  'rpp': 'Rencana Pelaksanaan Pembelajaran',
-  'material': 'Materi Ajar',
-  'evaluasi': 'Alat Evaluasi',
-  'media': 'Media Ajar',
-};
 
 const Page: React.FC = () => {
   const [courseList, setCourseList] = useState<any[]>([]);
-  const location = useLocation();
+  const [course, setCourse] = useState<any>({});
   useEffect(() => {
     // Only run this one time!  No multiple subscriptions!
     supabaseAuthService.user.subscribe((user: User | null) => {
@@ -28,35 +22,40 @@ const Page: React.FC = () => {
     });
   }, []);
 
+  const { id } = useParams<{ id: string; }>();
+
   useEffect(() => {
-    sbDataService.getRows('courses').then((data) => {
-      if (data) {
-        setCourseList(data);
+    sbDataService.getFilterRow('courses', 'id', id).then((data) => {
+      if (data?.data) {
+        setCourse(data?.data);
       }
     });
-  }, []);
-
-  const { name } = useParams<{ name: string; }>();
+    sbDataService.getFilterRows('subcourse', 'course_id', id).then((data) => {
+      if (data?.data) {
+        setCourseList(data?.data);
+      }
+    });
+  }, [id]);
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>{nameToHeader[name]}</IonTitle>
+          <IonTitle>{course.course_name}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
         {
           courseList.length > 0 ? courseList.map((course) => {
             return (
-              <Link key={course.id} to={`${name}/${course.id}`}>
+              <Link key={course.id} to={`${id}/${course.id}`}>
                 <div className="course-card">
                   <div className="course-card-image">
-                    {course.course_image && <img src={course.course_image} alt={course.course_name} />}
+                    {course.subcourse_image && <img src={course.course_image} alt={course.course_name} />}
                   </div>
                   <div className="course-card-content">
-                    <h1>{course.course_name}</h1>
-                    <p>{course.course_description}</p>
+                    <h1>{course.subcourse_name}</h1>
+                    <p>{course.subcourse_description}</p>
                   </div>
                 </div>
               </Link>

@@ -1,9 +1,8 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 import { User } from '@supabase/supabase-js';
-import { fileTrayStackedOutline } from 'ionicons/icons';
+import { Tray } from "phosphor-react";
 import { useState } from 'react';
 import { SupabaseAuthService } from '../services/supabase.auth.service';
-import { Tray } from "phosphor-react";
 import './Home.scss';
 const supabaseAuthService = new SupabaseAuthService();
 let _user: User | null = null;
@@ -56,7 +55,6 @@ const HomePage: React.FC = () => {
         </IonCard>
 
         <IonGrid fixed className="main-grid">
-          {/* 2x2 Row Col with Action Buton with icon  */}
           <IonRow>
             <IonCol>
               <IonCard routerLink="/page/media">

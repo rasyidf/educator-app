@@ -29,6 +29,7 @@ import ResetPassword from './Login/ResetPassword';
 import Signup from './Login/Signup';
 import { AccountPage } from './pages/Account';
 import HomePage from './pages/Home';
+import SubjectPage from './pages/SubjectPage';
 const startupService = new StartupService();
 const startupRoute = startupService.getStartupRoute();
 setupIonicReact();
@@ -48,6 +49,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/page/:name" exact={true}>
               <Page />
+            </Route>
+            <Route path="/page/:name/:id" exact={true}>
+              <SubjectPage />
             </Route>
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />

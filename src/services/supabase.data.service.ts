@@ -6,7 +6,28 @@ export class SupabaseDataService {
 
   constructor() { }
 
-  public async getRow(table: string, whereColumn: string, whereValue: any, columnList: string = '*') {
+  public async getRow(table: string, columnList: string = '*') {
+    const { data, error } = await supabase
+      .from(table)
+      .select(columnList)
+      .single();
+    if (error) {
+      console.log('error', error);
+    }
+    return data;
+  }
+
+  public async getRows(table: string, columnList: string = '*') {
+    const { data, error } = await supabase
+      .from(table)
+      .select(columnList)
+    if (error) {
+      console.log('error', error);
+    }
+    return data;
+  }
+
+  public async getFilterRow(table: string, whereColumn: string, whereValue: any, columnList: string = '*') {
     const { data, error } =
       await supabase.from(table)
         .select(columnList)
@@ -15,7 +36,7 @@ export class SupabaseDataService {
         .single(); // return a single object (not an array)
     return { data, error };
   }
-  public async getRows(table: string, whereColumn: string, whereValue: any, columnList: string = '*', offset: number = 0, limit: number = 100) {
+  public async getFilterRows(table: string, whereColumn: string, whereValue: any, columnList: string = '*', offset: number = 0, limit: number = 100) {
     const { data, error } =
       await supabase.from(table)
         .select(columnList)

@@ -1,16 +1,14 @@
-import { IonBackButton, IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonToolbar, useIonRouter, useIonToast } from "@ionic/react";
+import { IonButton, IonCardTitle, IonCol, IonContent, IonGrid, IonPage, IonRow, useIonRouter, useIonToast } from "@ionic/react";
 import styles from "./Login.module.scss";
 
-import { arrowBack, bookOutline } from "ionicons/icons";
+import { Player } from "@lottiefiles/react-lottie-player";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Action } from "../components/Action";
 import CustomField from "../components/CustomField";
 import { useLoginFields } from "../data/fields";
-import { Action } from "../components/Action";
-import { Wave } from "../components/Wave";
-import { useEffect, useState } from "react";
 import { validateForm } from "../data/utils";
-import { useParams } from "react-router";
 import { SupabaseAuthService } from '../services/supabase.auth.service';
-import { Player } from "@lottiefiles/react-lottie-player";
 const supabaseAuthService = new SupabaseAuthService();
 
 const Login = () => {
