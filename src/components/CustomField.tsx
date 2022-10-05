@@ -2,7 +2,7 @@ import { IonInput, IonLabel } from '@ionic/react'
 import styles from './CustomField.module.scss'
 
 const CustomField = ({ field, errors }: any) => {
-  const error = errors && errors.filter((e: { id: any }) => e.id === field.id)[0]
+  const error = errors?.filter((e: { id: any }) => e.id === field.id)[0]
   const errorMessage = error && errors.filter((e: { id: any }) => e.id === field.id)[0].message
 
   return (

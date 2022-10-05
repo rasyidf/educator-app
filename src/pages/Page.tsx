@@ -1,16 +1,15 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react'
-import { User } from '@supabase/supabase-js'
-import { useEffect, useState } from 'react'
-import { useParams, useLocation } from 'react-router'
-import { SupabaseAuthService } from '../services/supabase.auth.service'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react'
 import { Player } from '@lottiefiles/react-lottie-player'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
+import { SupabaseAuthService } from '../services/supabase.auth.service'
 
-import './Page.scss'
-import { SupabaseDataService } from '../services/supabase.data.service'
 import { Link } from 'react-router-dom'
+import { SupabaseDataService } from '../services/supabase.data.service'
+import './Page.scss'
 const sbDataService = new SupabaseDataService()
 const supabaseAuthService = new SupabaseAuthService()
-let _user: User | null = null
+// let _user: User | null = null
 const nameToHeader: Record<string, string> = {
   rpp: 'Rencana Pelaksanaan Pembelajaran',
   material: 'Materi Ajar',
@@ -20,16 +19,15 @@ const nameToHeader: Record<string, string> = {
 
 const Page: React.FC = () => {
   const [courseList, setCourseList] = useState<any[]>([])
-  const location = useLocation()
-  useEffect(() => {
-    // Only run this one time!  No multiple subscriptions!
-    supabaseAuthService.user.subscribe((user: User | null) => {
-      _user = user
-    })
-  }, [])
+  // useEffect(() => {
+  //   // Only run this one time!  No multiple subscriptions!
+  //   supabaseAuthService.user.subscribe((user: User | null) => {
+  //     _user = user
+  //   })
+  // }, [])
 
   useEffect(() => {
-    sbDataService.getRows('courses').then((data) => {
+    void sbDataService.getRows('courses').then((data) => {
       if (data != null) {
         setCourseList(data)
       }
@@ -50,29 +48,29 @@ const Page: React.FC = () => {
           courseList.length > 0
             ? courseList.map((course) => {
               return (
-              <Link key={course.id} to={`${name}/${course.id}`}>
-                <div className="course-card">
-                  <div className="course-card-image">
-                    {course.course_image && <img src={course.course_image} alt={course.course_name} />}
+                <Link key={course.id} to={`${name}/${course.id as string}`}>
+                  <div className="course-card">
+                    <div className="course-card-image">
+                      {course.course_image && <img src={course.course_image} alt={course.course_name} />}
+                    </div>
+                    <div className="course-card-content">
+                      <h1>{course.course_name}</h1>
+                      <p>{course.course_description}</p>
+                    </div>
                   </div>
-                  <div className="course-card-content">
-                    <h1>{course.course_name}</h1>
-                    <p>{course.course_description}</p>
-                  </div>
-                </div>
-              </Link>
+                </Link>
               )
             })
             : (<>
-            <Player
-              autoplay
-              loop
-              src="https://assets7.lottiefiles.com/packages/lf20_eJkC1J.json"
-              style={{ height: '400px', width: '400px' }}
-            >
-            </Player>
-            <h1 className="text-center font-sans text-xl font-bold">BELUM ADA DATA</h1>
-          </>)
+              <Player
+                autoplay
+                loop
+                src="https://assets7.lottiefiles.com/packages/lf20_eJkC1J.json"
+                style={{ height: '400px', width: '400px' }}
+              >
+              </Player>
+              <h1 className="text-center font-sans text-xl font-bold">BELUM ADA DATA</h1>
+            </>)
         }
 
       </IonContent>

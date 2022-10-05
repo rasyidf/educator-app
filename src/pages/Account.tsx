@@ -54,7 +54,7 @@ export function AccountPage () {
     }
   }, [present, showToast, dismiss])
 
-  const updateProfile = useCallback(async (e?: any, avatar_url: string = '') => {
+  const updateProfile = useCallback(async (e?: any, avatarUrl = '') => {
     e?.preventDefault()
 
     console.log('update ')
@@ -64,9 +64,9 @@ export function AccountPage () {
       const user = supabase.auth.user()
 
       const updates = {
-        id: user!.id,
+        id: user?.id ?? '',
         ...profile,
-        avatar_url,
+        avatar_url: avatarUrl,
         updated_at: new Date()
       }
 
@@ -74,8 +74,8 @@ export function AccountPage () {
         returning: 'minimal' // Don't return the value after inserting
       })
 
-      if (error != null) {
-        throw error
+      if (error) {
+        throw new Error(error.message)
       }
     } catch (error: any) {
       showToast({ message: error.message, duration: 5000 })

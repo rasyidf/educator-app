@@ -10,7 +10,7 @@ export class SupabaseAuthService {
 
   constructor () {
     this.loadUser()
-    supabase.auth.onAuthStateChange(async (event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && (session != null)) {
         this._user = session.user
         this.user.next(session.user)
@@ -23,7 +23,7 @@ export class SupabaseAuthService {
 
   // ************** auth ****************
 
-  private async loadUser () {
+  private loadUser (): void {
     const user = supabase.auth.user()
     if (user != null) {
       this._user = user
@@ -33,7 +33,7 @@ export class SupabaseAuthService {
     }
   };
 
-  public signUpWithEmail = async (email: string, password: string) => {
+  public signUpWithEmail = async (email: string, password: string): Promise<any> => {
     const { user, session, error } = await supabase.auth.signUp({
       email,
       password
@@ -41,7 +41,7 @@ export class SupabaseAuthService {
     return { user, session, error }
   }
 
-  public signInWithEmail = async (email: string, password: string) => {
+  public signInWithEmail = async (email: string, password: string): Promise<any> => {
     const { user, session, error } = await supabase.auth.signIn({
       email,
       password
@@ -49,7 +49,7 @@ export class SupabaseAuthService {
     return { user, session, error }
   }
 
-  public signInWithProvider = async (provider: Provider) => {
+  public signInWithProvider = async (provider: Provider): Promise<any> => {
     const { user, session, error } = await supabase.auth.signIn({
       provider
     }, {
@@ -58,7 +58,7 @@ export class SupabaseAuthService {
     return { user, session, error }
   }
 
-  public resetPassword = async (email: string) => {
+  public resetPassword = async (email: string): Promise<any> => {
     const { data, error } = await supabase.auth.api.resetPasswordForEmail(email,
       {
         redirectTo: window.location.origin
@@ -66,7 +66,7 @@ export class SupabaseAuthService {
     return { data, error }
   }
 
-  public sendMagicLink = async (email: string) => {
+  public sendMagicLink = async (email: string): Promise<any> => {
     const { user, session, error } = await supabase.auth.signIn({
       email
     }, {
@@ -75,13 +75,13 @@ export class SupabaseAuthService {
     return { user, session, error }
   }
 
-  public updatePassword = async (access_token: string, new_password: string) => {
+  public updatePassword = async (accessToken: string, newPassword: string): Promise<any> => {
     const { error, data } = await supabase.auth.api
-      .updateUser(access_token, { password: new_password })
+      .updateUser(accessToken, { password: newPassword })
     return { error, data }
   }
 
-  public signOut = async () => {
+  public signOut = async (): Promise<any> => {
     const { error } = await supabase.auth.signOut()
     if (error == null) {
       this.user.next(null)
@@ -89,7 +89,7 @@ export class SupabaseAuthService {
     return { error }
   }
 
-  public getProfile = async () => {
+  public getProfile = async (): Promise<any> => {
     return await supabase
       .from('profiles')
       .select('*')

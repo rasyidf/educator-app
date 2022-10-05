@@ -2,8 +2,8 @@ import { IonButton, IonIcon } from '@ionic/react'
 import { Provider } from '@supabase/gotrue-js'
 import { addIcons } from 'ionicons'
 import { logoGoogle } from 'ionicons/icons'
-import './ProviderSignInButton.css'
 import { SupabaseAuthService } from '../services/supabase.auth.service'
+import './ProviderSignInButton.css'
 
 interface ContainerProps {
   name: string
@@ -23,7 +23,11 @@ addIcons({
   google: logoGoogle
 })
 
-const ProviderSignInButton: React.FC<ContainerProps> = ({ name }) => {
+interface ProviderProps {
+  name: string
+}
+
+const ProviderSignInButton: React.FC<ContainerProps> = ({ name }: ProviderProps) => {
   const nameProperCase = name.charAt(0).toUpperCase() + name.slice(1)
   return (
     <div className="ion-text-center" onClick={() => { signInWithProvider((name as Provider)) }}>

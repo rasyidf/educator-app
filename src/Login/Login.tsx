@@ -30,7 +30,7 @@ const Login = () => {
   const fields = useLoginFields()
   const [errors, setErrors] = useState<Record<string, any> | boolean>(false)
   const signInWithEmail = async (email: string, password: string) => {
-    const { user, session, error } =
+    const { error } =
             await supabaseAuthService.signInWithEmail(email, password)
     if (error != null) { toast(error.message) }
   }
@@ -41,7 +41,7 @@ const Login = () => {
     if (!errors.length) {
       const emailField = fields.find(field => field.id === 'email')
       const passwordField = fields.find(field => field.id === 'password')
-      signInWithEmail(emailField?.input?.state?.value || '', passwordField?.input?.state?.value || '')
+      signInWithEmail(emailField?.input?.state?.value ?? '', passwordField?.input?.state?.value ?? '')
       router.push('/home')
     }
   }
@@ -51,7 +51,6 @@ const Login = () => {
       fields.forEach(field => field.input.state.reset(''))
       setErrors(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params])
 
   return (
@@ -75,7 +74,7 @@ const Login = () => {
                         <IonCol size="12">
 
                             {fields.map(field => {
-                              return <CustomField field={field} errors={errors} />
+                              return <CustomField key={field.id} field={field} errors={errors} />
                             })}
 
                             <IonButton expand="block" fill="clear" onClick={login}>Login</IonButton>

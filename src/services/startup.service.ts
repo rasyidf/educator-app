@@ -1,8 +1,5 @@
 
 export class StartupService {
-  constructor () {
-  }
-
   public getDefaultRoute (): string {
     return '/page'
   }
@@ -10,12 +7,18 @@ export class StartupService {
   public getStartupRoute (): string {
     // handle password recovery links
     const hash = window.location.hash
+
+    // explicit hash string check from null undefined and empty string return if empty
+    if ((hash == null) || (hash === undefined) || (hash === '')) {
+      return this.getDefaultRoute()
+    }
+
     // console.log('#hash', hash);
-    if (hash && hash.substring(0, 1) === '#') {
+    if ((hash !== '') && hash.substring(0, 1) === '#') {
       // console.log('processing hash');
       const tokens = hash.substring(1).split('&')
       // console.log('tokens', tokens);
-      const entryPayload: any = {}
+      const entryPayload: Record<string, string> = {}
       tokens.forEach((token) => {
         const pair = (token + '=').split('=')
         entryPayload[pair[0]] = pair[1]
@@ -23,7 +26,7 @@ export class StartupService {
       // console.log('entryPayload', entryPayload);
       // console.log('entryPayload.type', entryPayload?.type);
       if (entryPayload?.type === 'recovery') { // password recovery link
-        return `/resetpassword/${entryPayload.access_token}`
+        return `/resetpassword/${(entryPayload.access_token !== '') ? entryPayload.access_token : ''}`
         // router.navigateByUrl(`/resetpassword/${entryPayload.access_token}`);
       }
     }

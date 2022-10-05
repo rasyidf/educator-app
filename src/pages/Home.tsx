@@ -1,25 +1,23 @@
 import { IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react'
-import { User } from '@supabase/supabase-js'
-import { Tray } from 'phosphor-react'
+// import { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
+import materi from '../assets/bahanrion.png'
+import rpp from '../assets/book.jpg'
+import evals from '../assets/evaluasion.png'
+import mediaajar from '../assets/komputerion.png'
+import logo from '../assets/nos.jpg'
 import { SupabaseAuthService } from '../services/supabase.auth.service'
 import './Home.scss'
-import logo from '../assets/nos.jpg'
-import mediaajar from '../assets/komputerion.png'
-import evals from '../assets/evaluasion.png'
-import rpp from '../assets/book.jpg'
-import materi from '../assets/bahanrion.png'
-import { useHistory } from 'react-router'
 
 import styles from './Home.module.scss'
 const supabaseAuthService = new SupabaseAuthService()
-const _user: User | null = null
-const nameToHeader: Record<string, string> = {
-  rpp: 'Rencana Pelaksanaan Pembelajaran',
-  material: 'Materi Ajar',
-  evaluasi: 'Alat Evaluasi',
-  media: 'Media Ajar'
-}
+// const nameToHeader: Record<string, string> = {
+//   rpp: 'Rencana Pelaksanaan Pembelajaran',
+//   material: 'Materi Ajar',
+//   evaluasi: 'Alat Evaluasi',
+//   media: 'Media Ajar'
+// }
 const roleToString: Record<string, string> = {
   0: 'Administrator',
   1: 'Sekolah Dasar',
@@ -35,15 +33,19 @@ const HomePage: React.FC = () => {
     avatar_url: '',
     user_role: ''
   })
-  useIonViewWillEnter(async () => {
-    const userProfile = await supabaseAuthService.getProfile()
-    if (userProfile?.data) {
-      setProfile({ ...userProfile.data, user_role: roleToString[userProfile?.data?.user_role] })
-    }
+  useIonViewWillEnter(() => {
+    void supabaseAuthService.getProfile().then(
+      (data) => {
+        if (data != null) {
+          setProfile({ ...data, user_role: roleToString[data?.user_role] })
+          setRole(data?.user_role)
+        }
+      }
+    )
   })
 
   useEffect(() => {
-    if (profile === undefined) {
+    if (profile.user_role === '') {
       router.push('/login')
     }
   }, [profile, router])
@@ -67,7 +69,7 @@ const HomePage: React.FC = () => {
               <h1>Selamat datang {profile.username}</h1>
             </IonCardHeader>
             <IonCardContent>
-              <p>Anda Masuk sebagai {profile.user_role}</p>
+              <p>Anda Masuk sebagai {role}</p>
             </IonCardContent>
           </IonCard>)
         }

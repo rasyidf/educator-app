@@ -27,7 +27,7 @@ export function Avatar ({
         resultType: CameraResultType.DataUrl
       })
 
-      const file = await fetch(photo.dataUrl!)
+      const file = await fetch(photo?.dataUrl ?? '')
         .then(async (res) => await res.blob())
         .then(
           (blob) =>
@@ -52,7 +52,10 @@ export function Avatar ({
       if (error != null) {
         throw error
       }
-      const url = URL.createObjectURL(data!)
+      if (!data) {
+        return
+      }
+      const url = URL.createObjectURL(data)
       setAvatarUrl(url)
     } catch (error: any) {
       console.log('Error downloading image: ', error.message)
@@ -64,10 +67,10 @@ export function Avatar ({
       <div className="avatar_wrapper" onClick={uploadAvatar}>
         {avatarUrl
           ? (
-          <img src={avatarUrl} alt="avatar" />
+            <img src={avatarUrl} alt="avatar" />
             )
           : (
-          <IonIcon icon={person} className="no-avatar" />
+            <IonIcon icon={person} className="no-avatar" />
             )}
       </div>
 

@@ -1,8 +1,4 @@
-import React from 'react'
-
-interface Props {}
-
-const ProductPage = (props: Props) => {
+const ProductPage = () => {
   return (
     <div>ProductPage</div>
   )

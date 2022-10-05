@@ -3,13 +3,13 @@ import {
   IonHeader, IonIcon, IonInput, IonLabel, IonPage, IonRow,
   IonTitle, IonToolbar, useIonToast
 } from '@ionic/react'
-import { checkmark, link, logIn, personAdd, refreshCircle } from 'ionicons/icons'
+import { checkmark } from 'ionicons/icons'
 import { useState } from 'react'
-import './ResetPassword.css'
 import { useHistory } from 'react-router-dom'
+import './ResetPassword.css'
 
-import { SupabaseAuthService } from '../services/supabase.auth.service'
 import { useParams } from 'react-router'
+import { SupabaseAuthService } from '../services/supabase.auth.service'
 
 import { StartupService } from '../services/startup.service'
 const startupService = new StartupService()
@@ -35,8 +35,8 @@ const ResetPassword: React.FC = () => {
     })
   }
   const updatePassword = async () => {
-    const { data, error } =
-            await supabaseAuthService.updatePassword(token, password)
+    const { error } =
+      await supabaseAuthService.updatePassword(token, password)
     if (error != null) { toast(error.message) } else {
       present({
         color: 'success',
@@ -71,36 +71,36 @@ const ResetPassword: React.FC = () => {
         </IonHeader>
 
         <IonGrid class="ion-padding">
+          <IonRow>
+            <IonCol>
+              <IonLabel><b>New Password</b></IonLabel>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonInput type="password"
+                placeholder="Enter your new password"
+                onIonChange={e => setPassword(e?.detail?.value ?? '')}
+                value={password} class="inputBox" />
+            </IonCol>
+          </IonRow>
+          {password.length > 0 && password.length < 6 &&
             <IonRow>
-                <IonCol>
-                    <IonLabel><b>New Password</b></IonLabel>
-                </IonCol>
+              <IonCol>
+                <IonLabel color="danger"><b>Password too short</b></IonLabel>
+              </IonCol>
             </IonRow>
-            <IonRow>
-                <IonCol>
-                    <IonInput type="password"
-                    placeholder="Enter your new password"
-                    onIonChange={e => setPassword(e.detail.value!)}
-                    value={password} class="inputBox" />
-                </IonCol>
-            </IonRow>
-            {password.length > 0 && password.length < 6 &&
-                <IonRow>
-                    <IonCol>
-                        <IonLabel color="danger"><b>Password too short</b></IonLabel>
-                    </IonCol>
-                </IonRow>
-            }
-            <IonRow>
-                <IonCol>
-                    <IonButton expand="block"
-                    disabled={password.length < 6}
-                    onClick={updatePassword}>
-                        <IonIcon icon={checkmark} size="large" />&nbsp;&nbsp;
-                        <b>Save New Password</b>
-                    </IonButton>
-                </IonCol>
-            </IonRow>
+          }
+          <IonRow>
+            <IonCol>
+              <IonButton expand="block"
+                disabled={password.length < 6}
+                onClick={updatePassword}>
+                <IonIcon icon={checkmark} size="large" />&nbsp;&nbsp;
+                <b>Save New Password</b>
+              </IonButton>
+            </IonCol>
+          </IonRow>
         </IonGrid>
 
       </IonContent>
