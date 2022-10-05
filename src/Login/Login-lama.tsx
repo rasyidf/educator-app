@@ -1,57 +1,54 @@
 import {
-    IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid,
-    IonHeader, IonIcon, IonInput, IonLabel, IonMenuButton, IonPage, IonRow,
-    IonTitle, IonToolbar, useIonToast
-} from '@ionic/react';
-import { link, logIn, personAdd, refreshCircle } from 'ionicons/icons';
-import { useState } from 'react';
-import './Login-lama.css';
+  IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid,
+  IonHeader, IonIcon, IonInput, IonLabel, IonMenuButton, IonPage, IonRow,
+  IonTitle, IonToolbar, useIonToast
+} from '@ionic/react'
+import { link, logIn, personAdd, refreshCircle } from 'ionicons/icons'
+import { useState } from 'react'
+import './Login-lama.css'
 
-
-import ProviderSignInButton from './ProviderSignInButton';
-import { SupabaseAuthService } from '../services/supabase.auth.service';
-import { validateEmail } from './validateEmail';
-const supabaseAuthService = new SupabaseAuthService();
+import ProviderSignInButton from './ProviderSignInButton'
+import { SupabaseAuthService } from '../services/supabase.auth.service'
+import { validateEmail } from './validateEmail'
+const supabaseAuthService = new SupabaseAuthService()
 
 const Login: React.FC = () => {
-    const [present, dismiss] = useIonToast();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const toast = (message: string, color: string = 'danger') => {
-        present({
-            color: color,
-            message: message,
-            cssClass: 'toast',
-            buttons: [{ icon: 'close', handler: () => dismiss() }],
-            duration: 6000,
-            //onDidDismiss: () => console.log('dismissed'),
-            //onWillDismiss: () => console.log('will dismiss'),
-        });
-    };
-    const signInWithEmail = async () => {
-        const { user, session, error } =
-            await supabaseAuthService.signInWithEmail(email, password);
-        if (error) { toast(error.message); }
-    };
-    const signUp = async () => {
-        const { user, session, error } =
-            await supabaseAuthService.signUpWithEmail(email, password);
-        if (error) { toast(error.message); }
-        else { toast('Please check your email for a confirmation link', 'success'); }
-    };
-    const resetPassword = async () => {
-        const { data, error } =
-            await supabaseAuthService.resetPassword(email);
-        if (error) { toast(error.message); }
-        else { toast('Please check your email for a password reset link', 'success'); }
-    };
-    const sendMagicLink = async () => {
-        const { user, session, error } =
-            await supabaseAuthService.sendMagicLink(email);
-        if (error) { toast(error.message); }
-    };
+  const [present, dismiss] = useIonToast()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const toast = (message: string, color: string = 'danger') => {
+    present({
+      color,
+      message,
+      cssClass: 'toast',
+      buttons: [{ icon: 'close', handler: async () => await dismiss() }],
+      duration: 6000
+      // onDidDismiss: () => console.log('dismissed'),
+      // onWillDismiss: () => console.log('will dismiss'),
+    })
+  }
+  const signInWithEmail = async () => {
+    const { user, session, error } =
+            await supabaseAuthService.signInWithEmail(email, password)
+    if (error != null) { toast(error.message) }
+  }
+  const signUp = async () => {
+    const { user, session, error } =
+            await supabaseAuthService.signUpWithEmail(email, password)
+    if (error != null) { toast(error.message) } else { toast('Please check your email for a confirmation link', 'success') }
+  }
+  const resetPassword = async () => {
+    const { data, error } =
+            await supabaseAuthService.resetPassword(email)
+    if (error != null) { toast(error.message) } else { toast('Please check your email for a password reset link', 'success') }
+  }
+  const sendMagicLink = async () => {
+    const { user, session, error } =
+            await supabaseAuthService.sendMagicLink(email)
+    if (error != null) { toast(error.message) }
+  }
 
-    return (
+  return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
@@ -146,12 +143,10 @@ const Login: React.FC = () => {
                         <ProviderSignInButton name="google" />
                     </IonCol>
                 </IonRow>
-             
-
 
             </IonContent>
         </IonPage>
-    );
-};
+  )
+}
 
-export default Login;
+export default Login

@@ -1,12 +1,11 @@
-import { IonInput, IonLabel } from "@ionic/react";
-import styles from "./CustomField.module.scss";
+import { IonInput, IonLabel } from '@ionic/react'
+import styles from './CustomField.module.scss'
 
 const CustomField = ({ field, errors }: any) => {
+  const error = errors && errors.filter((e: { id: any }) => e.id === field.id)[0]
+  const errorMessage = error && errors.filter((e: { id: any }) => e.id === field.id)[0].message
 
-    const error = errors && errors.filter((e: { id: any; }) => e.id === field.id)[0];
-    const errorMessage = error && errors.filter((e: { id: any; }) => e.id === field.id)[0].message;
-
-    return (
+  return (
 
         <div className={styles.field}>
             <IonLabel className={styles.fieldLabel}>
@@ -15,7 +14,7 @@ const CustomField = ({ field, errors }: any) => {
             </IonLabel>
             <IonInput className={styles.customInput} {...field.input.props} {...field.input.state} />
         </div>
-    );
-};
+  )
+}
 
-export default CustomField;
+export default CustomField

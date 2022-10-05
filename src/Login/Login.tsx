@@ -1,62 +1,60 @@
-import { IonButton, IonCardTitle, IonCol, IonContent, IonGrid, IonPage, IonRow, useIonRouter, useIonToast } from "@ionic/react";
-import styles from "./Login.module.scss";
+import { IonButton, IonCardTitle, IonCol, IonContent, IonGrid, IonPage, IonRow, useIonRouter, useIonToast } from '@ionic/react'
+import styles from './Login.module.scss'
 
-import { Player } from "@lottiefiles/react-lottie-player";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { Action } from "../components/Action";
-import CustomField from "../components/CustomField";
-import { useLoginFields } from "../data/fields";
-import { validateForm } from "../data/utils";
-import { SupabaseAuthService } from '../services/supabase.auth.service';
-const supabaseAuthService = new SupabaseAuthService();
+import { Player } from '@lottiefiles/react-lottie-player'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
+import { Action } from '../components/Action'
+import CustomField from '../components/CustomField'
+import { useLoginFields } from '../data/fields'
+import { validateForm } from '../data/utils'
+import { SupabaseAuthService } from '../services/supabase.auth.service'
+const supabaseAuthService = new SupabaseAuthService()
 
 const Login = () => {
+  const [present, dismiss] = useIonToast()
+  const toast = (message: string, color: string = 'danger') => {
+    present({
+      color,
+      message,
+      cssClass: 'toast',
+      buttons: [{ icon: 'close', handler: async () => await dismiss() }],
+      duration: 6000,
+      onDidDismiss: () => console.log('dismissed')
+      // onWillDismiss: () => console.log('will dismiss'),
+    })
+  }
 
-    const [present, dismiss] = useIonToast();
-    const toast = (message: string, color: string = 'danger') => {
-        present({
-            color: color,
-            message: message,
-            cssClass: 'toast',
-            buttons: [{ icon: 'close', handler: () => dismiss() }],
-            duration: 6000,
-            onDidDismiss: () => console.log('dismissed'),
-            //onWillDismiss: () => console.log('will dismiss'),
-        });
-    };
+  const params = useParams()
+  const router = useIonRouter()
+  const fields = useLoginFields()
+  const [errors, setErrors] = useState<Record<string, any> | boolean>(false)
+  const signInWithEmail = async (email: string, password: string) => {
+    const { user, session, error } =
+            await supabaseAuthService.signInWithEmail(email, password)
+    if (error != null) { toast(error.message) }
+  }
+  const login = () => {
+    const errors = validateForm(fields)
+    setErrors(errors)
 
-    const params = useParams();
-    const router = useIonRouter();
-    const fields = useLoginFields();
-    const [errors, setErrors] = useState<Record<string, any> | boolean>(false);
-    const signInWithEmail = async (email: string, password: string) => {
-        const { user, session, error } =
-            await supabaseAuthService.signInWithEmail(email, password);
-        if (error) { toast(error.message); }
-    };
-    const login = () => {
+    if (!errors.length) {
+      const emailField = fields.find(field => field.id === 'email')
+      const passwordField = fields.find(field => field.id === 'password')
+      signInWithEmail(emailField?.input?.state?.value || '', passwordField?.input?.state?.value || '')
+      router.push('/home')
+    }
+  }
 
-        const errors = validateForm(fields);
-        setErrors(errors);
+  useEffect(() => {
+    return () => {
+      fields.forEach(field => field.input.state.reset(''))
+      setErrors(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params])
 
-        if (!errors.length) {
-            const emailField = fields.find(field => field.id === 'email');
-            const passwordField = fields.find(field => field.id === 'password');
-            signInWithEmail(emailField?.input?.state?.value || "", passwordField?.input?.state?.value || "");
-            router.push('/home');
-        }
-    };
-
-    useEffect(() => {
-        return () => {
-            fields.forEach(field => field.input.state.reset(""));
-            setErrors(false);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params]);
-
-    return (
+  return (
         <IonPage className={styles.loginPage}>
             <IonContent fullscreen>
                 <IonGrid className="ion-padding">
@@ -77,8 +75,7 @@ const Login = () => {
                         <IonCol size="12">
 
                             {fields.map(field => {
-
-                                return <CustomField field={field} errors={errors} />;
+                              return <CustomField field={field} errors={errors} />
                             })}
 
                             <IonButton expand="block" fill="clear" onClick={login}>Login</IonButton>
@@ -93,7 +90,7 @@ const Login = () => {
             </IonContent>
 
         </IonPage>
-    );
-};
+  )
+}
 
-export default Login;
+export default Login

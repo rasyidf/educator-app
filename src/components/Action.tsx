@@ -1,7 +1,7 @@
-import { IonCol, IonRouterLink, IonRow } from "@ionic/react";
-import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal } from "react";
+import { IonCol, IonRouterLink, IonRow } from '@ionic/react'
+import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal } from 'react'
 
-export const Action = (props: { message: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; link: string | undefined; text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }) => (
+export const Action = (props: { message: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined, link: string | undefined, text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined }) => (
 
     <IonRow className="ion-text-center ion-justify-content-center">
         <IonCol size="12">
@@ -11,4 +11,4 @@ export const Action = (props: { message: string | number | boolean | ReactElemen
             </p>
         </IonCol>
     </IonRow>
-);
+)

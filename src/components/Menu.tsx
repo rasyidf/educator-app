@@ -10,30 +10,30 @@ import {
   IonMenuToggle,
   IonNote,
   useIonRouter
-} from '@ionic/react';
+} from '@ionic/react'
 
-import { User } from '@supabase/supabase-js';
-import { archiveOutline, bookOutline, fileTrayOutline, fileTrayStackedOutline, homeOutline, logInOutline, logOutOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { SupabaseAuthService } from '../services/supabase.auth.service';
-import './Menu.scss';
+import { User } from '@supabase/supabase-js'
+import { archiveOutline, bookOutline, fileTrayOutline, fileTrayStackedOutline, homeOutline, logInOutline, logOutOutline } from 'ionicons/icons'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { SupabaseAuthService } from '../services/supabase.auth.service'
+import './Menu.scss'
 
-const supabaseAuthService = new SupabaseAuthService();
+const supabaseAuthService = new SupabaseAuthService()
 
 interface AppPage {
-  url: string;
-  iosIcon: string;
-  mdIcon: string;
-  title: string;
+  url: string
+  iosIcon: string
+  mdIcon: string
+  title: string
 }
 
 const appPages: AppPage[] = [
   {
-    title: "Home",
-    url: "/home",
+    title: 'Home',
+    url: '/home',
     iosIcon: homeOutline,
-    mdIcon: homeOutline,
+    mdIcon: homeOutline
   },
   {
     title: 'Media Ajar',
@@ -58,35 +58,34 @@ const appPages: AppPage[] = [
     url: '/page/material',
     iosIcon: archiveOutline,
     mdIcon: archiveOutline
-  },
-];
+  }
+]
 
 const Menu: React.FC = () => {
-  const router = useIonRouter();
-  const location = useLocation();
-  let _user: User | null = null;
-  const [email, setEmail] = useState('');
+  const router = useIonRouter()
+  const location = useLocation()
+  let _user: User | null = null
+  const [email, setEmail] = useState('')
 
   const signOut = async () => {
-    const { error } = await supabaseAuthService.signOut();
-    if (error) {
-      console.error('Error signing out', error);
+    const { error } = await supabaseAuthService.signOut()
+    if (error != null) {
+      console.error('Error signing out', error)
     }
-    router.push('/login');
-  };
+    router.push('/login')
+  }
 
   useEffect(() => {
     // Only run this one time!  No multiple subscriptions!
     supabaseAuthService.user.subscribe((user: User | null) => {
-      _user = user;
+      _user = user
       if (_user?.email) {
-        setEmail(_user.email);
+        setEmail(_user.email)
       } else {
-        setEmail('');
+        setEmail('')
       }
-    });
-  }, []); // <-- empty dependency array
-
+    })
+  }, []) // <-- empty dependency array
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -102,7 +101,7 @@ const Menu: React.FC = () => {
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
-            );
+            )
           })}
 
           {email &&
@@ -123,7 +122,7 @@ const Menu: React.FC = () => {
 
       </IonContent>
     </IonMenu>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu

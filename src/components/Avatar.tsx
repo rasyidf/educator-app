@@ -1,74 +1,76 @@
-import { Camera, CameraResultType } from '@capacitor/camera';
-import { IonIcon } from '@ionic/react';
-import { person } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
-import { SupabaseStorageService } from '../services/supabase.storage.service';
-import './Avatar.scss';
+import { Camera, CameraResultType } from '@capacitor/camera'
+import { IonIcon } from '@ionic/react'
+import { person } from 'ionicons/icons'
+import { useEffect, useState } from 'react'
+import { SupabaseStorageService } from '../services/supabase.storage.service'
+import './Avatar.scss'
 
-const supabaseStorageService = new SupabaseStorageService();
+const supabaseStorageService = new SupabaseStorageService()
 
-export function Avatar({
+export function Avatar ({
   url,
-  onUpload,
+  onUpload
 }: {
-  url: string;
-  onUpload: (e: any, file: string) => Promise<void>;
+  url: string
+  onUpload: (e: any, file: string) => Promise<void>
 }) {
-  const [avatarUrl, setAvatarUrl] = useState<string | undefined>();
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
 
   useEffect(() => {
     if (url) {
-      downloadImage(url);
+      downloadImage(url)
     }
-  }, [url]);
+  }, [url])
   const uploadAvatar = async () => {
     try {
       const photo = await Camera.getPhoto({
-        resultType: CameraResultType.DataUrl,
-      });
+        resultType: CameraResultType.DataUrl
+      })
 
       const file = await fetch(photo.dataUrl!)
-        .then((res) => res.blob())
+        .then(async (res) => await res.blob())
         .then(
           (blob) =>
             new File([blob], 'my-file', { type: `image/${photo.format}` })
-        );
+        )
 
       const fileName = `${Math.random()}-${new Date().getTime()}.${photo.format
-        }`;
-      let { error: uploadError } = await supabaseStorageService.uploadFile('avatars', fileName, file);
-      if (uploadError) {
-        throw uploadError;
+        }`
+      const { error: uploadError } = await supabaseStorageService.uploadFile('avatars', fileName, file)
+      if (uploadError != null) {
+        throw uploadError
       }
-      onUpload(null, fileName);
+      onUpload(null, fileName)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const downloadImage = async (path: string) => {
     try {
-      const { data, error } = await supabaseStorageService.getFile('avatars', path);
-      if (error) {
-        throw error;
+      const { data, error } = await supabaseStorageService.getFile('avatars', path)
+      if (error != null) {
+        throw error
       }
-      const url = URL.createObjectURL(data!);
-      setAvatarUrl(url);
+      const url = URL.createObjectURL(data!)
+      setAvatarUrl(url)
     } catch (error: any) {
-      console.log('Error downloading image: ', error.message);
+      console.log('Error downloading image: ', error.message)
     }
-  };
+  }
 
   return (
     <div className="avatar">
       <div className="avatar_wrapper" onClick={uploadAvatar}>
-        {avatarUrl ? (
+        {avatarUrl
+          ? (
           <img src={avatarUrl} alt="avatar" />
-        ) : (
+            )
+          : (
           <IonIcon icon={person} className="no-avatar" />
-        )}
+            )}
       </div>
 
     </div>
-  );
+  )
 }

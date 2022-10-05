@@ -1,82 +1,80 @@
-import { useFormInput } from "./utils";
+import { useFormInput } from './utils'
 
 export const useSignupFields = () => {
+  return [
+    {
+      id: 'name',
+      label: 'Name',
+      required: true,
+      input: {
 
-    return [
-        {
-            id: "name",
-            label: "Name",
-            required: true,
-            input: {
+        props: {
 
-                props: {
-
-                    type: "text",
-                    placeholder: "Joe Bloggs"
-                },
-                state: useFormInput("")
-            }
+          type: 'text',
+          placeholder: 'Joe Bloggs'
         },
-        {
-            id: "email",
-            label: "Email",
-            required: true,
-            input: {
+        state: useFormInput('')
+      }
+    },
+    {
+      id: 'email',
+      label: 'Email',
+      required: true,
+      input: {
 
-                props: {
+        props: {
 
-                    type: "email",
-                    placeholder: "joe@bloggs.com"
-                },
-                state: useFormInput("")
-            }
+          type: 'email',
+          placeholder: 'joe@bloggs.com'
         },
-        {
-            id: "password",
-            label: "Password",
-            required: true,
-            input: {
+        state: useFormInput('')
+      }
+    },
+    {
+      id: 'password',
+      label: 'Password',
+      required: true,
+      input: {
 
-                props: {
+        props: {
 
-                    type: "password",
-                    placeholder: "*********"
-                },
-                state: useFormInput("")
-            }
-        }
-    ];
-};
+          type: 'password',
+          placeholder: '*********'
+        },
+        state: useFormInput('')
+      }
+    }
+  ]
+}
 
 export const useLoginFields = () => {
+  return [
 
-    return [
+    {
+      id: 'email',
+      label: 'Email',
+      required: true,
+      input: {
 
-        {
-            id: "email",
-            label: "Email",
-            required: true,
-            input: {
-
-                props: {
-                    type: "email",
-                    placeholder: "joe@bloggs.com"
-                },
-                state: useFormInput("")
-            }
+        props: {
+          type: 'email',
+          placeholder: 'joe@bloggs.com'
         },
-        {
-            id: "password",
-            label: "Password",
-            required: true,
-            input: {
+        state: useFormInput('')
+      }
+    },
+    {
+      id: 'password',
+      label: 'Password',
+      required: true,
+      input: {
 
-                props: {
-                    type: "password",
-                    placeholder: "*******"
-                },
-                state: useFormInput("")
-            }
-        }
-    ];
-};
+        props: {
+          type: 'password',
+          placeholder: '*******'
+        },
+        state: useFormInput('')
+      }
+    }
+  ]
+}

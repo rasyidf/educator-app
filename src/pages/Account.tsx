@@ -8,38 +8,35 @@ import {
   IonPage, IonSelect, IonSelectOption, IonTitle,
   IonToolbar,
   useIonLoading, useIonRouter, useIonToast, useIonViewDidEnter, useIonViewWillEnter
-} from '@ionic/react';
-import { useCallback, useState } from 'react';
-import { Avatar } from '../components/Avatar';
-import { supabase } from '../services/supabase';
-import { SupabaseAuthService } from '../services/supabase.auth.service';
-import "./Account.scss";
-const supabaseAuthService = new SupabaseAuthService();
+} from '@ionic/react'
+import { useCallback, useState } from 'react'
+import { Avatar } from '../components/Avatar'
+import { supabase } from '../services/supabase'
+import { SupabaseAuthService } from '../services/supabase.auth.service'
+import './Account.scss'
+const supabaseAuthService = new SupabaseAuthService()
 
-
-export function AccountPage() {
-  const [present, dismiss] = useIonLoading();
-  const [showToast] = useIonToast();
-  const [session] = useState(() => supabase.auth.session());
-  const router = useIonRouter();
+export function AccountPage () {
+  const [present, dismiss] = useIonLoading()
+  const [showToast] = useIonToast()
+  const [session] = useState(() => supabase.auth.session())
+  const router = useIonRouter()
   const [profile, setProfile] = useState({
     username: '',
     website: '',
     avatar_url: '',
-    user_role: '',
-  });
-
+    user_role: ''
+  })
 
   const getProfile = useCallback(async () => {
-
     try {
       present({
         message: 'Loading...',
         duration: 1000
-      });
-      let { data, error, status } = await supabaseAuthService.getProfile();
-      if (error && status !== 406) {
-        throw error;
+      })
+      const { data, error, status } = await supabaseAuthService.getProfile()
+      if ((error != null) && status !== 406) {
+        throw error
       }
 
       if (data) {
@@ -47,59 +44,58 @@ export function AccountPage() {
           username: data.username,
           website: data.website,
           avatar_url: data.avatar_url,
-          user_role: data.user_role,
-        });
+          user_role: data.user_role
+        })
       }
     } catch (error: any) {
-      showToast({ message: error.message, duration: 5000 });
+      showToast({ message: error.message, duration: 5000 })
     } finally {
-      dismiss();
+      dismiss()
     }
-  }, [present, showToast, dismiss]);
-
+  }, [present, showToast, dismiss])
 
   const updateProfile = useCallback(async (e?: any, avatar_url: string = '') => {
-    e?.preventDefault();
+    e?.preventDefault()
 
-    console.log('update ');
-    present();
+    console.log('update ')
+    present()
 
     try {
-      const user = supabase.auth.user();
+      const user = supabase.auth.user()
 
       const updates = {
         id: user!.id,
         ...profile,
-        avatar_url: avatar_url,
-        updated_at: new Date(),
-      };
+        avatar_url,
+        updated_at: new Date()
+      }
 
-      let { error } = await supabase.from('profiles').upsert(updates, {
-        returning: 'minimal', // Don't return the value after inserting
-      });
+      const { error } = await supabase.from('profiles').upsert(updates, {
+        returning: 'minimal' // Don't return the value after inserting
+      })
 
-      if (error) {
-        throw error;
+      if (error != null) {
+        throw error
       }
     } catch (error: any) {
-      showToast({ message: error.message, duration: 5000 });
+      showToast({ message: error.message, duration: 5000 })
     } finally {
-      console.log('update end');
-      dismiss();
+      console.log('update end')
+      dismiss()
     }
-  }, [dismiss, present, profile, showToast]);
+  }, [dismiss, present, profile, showToast])
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
-    router.push('/', 'forward', 'replace');
-  }, [router]);
+    await supabase.auth.signOut()
+    router.push('/', 'forward', 'replace')
+  }, [router])
 
   useIonViewWillEnter(() => {
-    getProfile();
-  });
+    getProfile()
+  })
   useIonViewDidEnter(() => {
-    dismiss();
-  });
+    dismiss()
+  })
 
   return (
     <IonPage>
@@ -165,5 +161,5 @@ export function AccountPage() {
         </div>
       </IonContent>
     </IonPage>
-  );
+  )
 }

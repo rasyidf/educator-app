@@ -1,42 +1,42 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
-import { User } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { SupabaseAuthService } from '../services/supabase.auth.service';
-import { Player } from "@lottiefiles/react-lottie-player";
-import { useLocation } from 'react-router';
-import './Page.scss';
-import { SupabaseDataService } from '../services/supabase.data.service';
-import { Link } from 'react-router-dom';
-const sbDataService = new SupabaseDataService();
-const supabaseAuthService = new SupabaseAuthService();
-let _user: User | null = null;
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react'
+import { User } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
+import { useParams, useLocation } from 'react-router'
+import { SupabaseAuthService } from '../services/supabase.auth.service'
+import { Player } from '@lottiefiles/react-lottie-player'
+
+import './Page.scss'
+import { SupabaseDataService } from '../services/supabase.data.service'
+import { Link } from 'react-router-dom'
+const sbDataService = new SupabaseDataService()
+const supabaseAuthService = new SupabaseAuthService()
+let _user: User | null = null
 const nameToHeader: Record<string, string> = {
-  'rpp': 'Rencana Pelaksanaan Pembelajaran',
-  'material': 'Materi Ajar',
-  'evaluasi': 'Alat Evaluasi',
-  'media': 'Media Ajar',
-};
+  rpp: 'Rencana Pelaksanaan Pembelajaran',
+  material: 'Materi Ajar',
+  evaluasi: 'Alat Evaluasi',
+  media: 'Media Ajar'
+}
 
 const Page: React.FC = () => {
-  const [courseList, setCourseList] = useState<any[]>([]);
-  const location = useLocation();
+  const [courseList, setCourseList] = useState<any[]>([])
+  const location = useLocation()
   useEffect(() => {
     // Only run this one time!  No multiple subscriptions!
     supabaseAuthService.user.subscribe((user: User | null) => {
-      _user = user;
-    });
-  }, []);
+      _user = user
+    })
+  }, [])
 
   useEffect(() => {
     sbDataService.getRows('courses').then((data) => {
-      if (data) {
-        setCourseList(data);
+      if (data != null) {
+        setCourseList(data)
       }
-    });
-  }, []);
+    })
+  }, [])
 
-  const { name } = useParams<{ name: string; }>();
+  const { name } = useParams<{ name: string }>()
 
   return (
     <IonPage>
@@ -47,8 +47,9 @@ const Page: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
         {
-          courseList.length > 0 ? courseList.map((course) => {
-            return (
+          courseList.length > 0
+            ? courseList.map((course) => {
+              return (
               <Link key={course.id} to={`${name}/${course.id}`}>
                 <div className="course-card">
                   <div className="course-card-image">
@@ -60,8 +61,9 @@ const Page: React.FC = () => {
                   </div>
                 </div>
               </Link>
-            );
-          }) : (<>
+              )
+            })
+            : (<>
             <Player
               autoplay
               loop
@@ -75,7 +77,7 @@ const Page: React.FC = () => {
 
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

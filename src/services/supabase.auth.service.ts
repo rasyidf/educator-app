@@ -1,34 +1,33 @@
-import { createClient, Provider, SupabaseClient, User } from '@supabase/supabase-js';
-import { BehaviorSubject } from 'rxjs';
-import { keys } from './keys.service';
+import { createClient, Provider, SupabaseClient, User } from '@supabase/supabase-js'
+import { BehaviorSubject } from 'rxjs'
+import { keys } from './keys.service'
 
-const supabase: SupabaseClient = createClient(keys.SUPABASE_URL, keys.SUPABASE_KEY);
+const supabase: SupabaseClient = createClient(keys.SUPABASE_URL, keys.SUPABASE_KEY)
 
 export class SupabaseAuthService {
+  public user = new BehaviorSubject<User | null>(null)
+  private _user: User | null = null
 
-  public user = new BehaviorSubject<User | null>(null);
-  private _user: User | null = null;
-
-  constructor() {
-    this.loadUser();
+  constructor () {
+    this.loadUser()
     supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        this._user = session.user;
-        this.user.next(session.user);
+      if (event === 'SIGNED_IN' && (session != null)) {
+        this._user = session.user
+        this.user.next(session.user)
       } else {
-        this._user = null;
-        this.user.next(null);
+        this._user = null
+        this.user.next(null)
       }
-    });
+    })
   }
 
   // ************** auth ****************
 
-  private async loadUser() {
-    const user = supabase.auth.user();
-    if (user) {
-      this._user = user;
-      this.user.next(user);
+  private async loadUser () {
+    const user = supabase.auth.user()
+    if (user != null) {
+      this._user = user
+      this.user.next(user)
     } else {
       // no current user
     }
@@ -36,65 +35,65 @@ export class SupabaseAuthService {
 
   public signUpWithEmail = async (email: string, password: string) => {
     const { user, session, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
-    return { user, session, error };
-  };
+      email,
+      password
+    })
+    return { user, session, error }
+  }
 
   public signInWithEmail = async (email: string, password: string) => {
     const { user, session, error } = await supabase.auth.signIn({
-      email: email,
-      password: password,
-    });
-    return { user, session, error };
-  };
+      email,
+      password
+    })
+    return { user, session, error }
+  }
 
   public signInWithProvider = async (provider: Provider) => {
     const { user, session, error } = await supabase.auth.signIn({
-      provider: provider
+      provider
     }, {
       redirectTo: window.location.origin
-    });
-    return { user, session, error };
-  };
+    })
+    return { user, session, error }
+  }
 
   public resetPassword = async (email: string) => {
     const { data, error } = await supabase.auth.api.resetPasswordForEmail(email,
       {
         redirectTo: window.location.origin
-      });
-    return { data, error };
-  };
+      })
+    return { data, error }
+  }
 
   public sendMagicLink = async (email: string) => {
     const { user, session, error } = await supabase.auth.signIn({
-      email: email
+      email
     }, {
       redirectTo: window.location.origin
-    });
-    return { user, session, error };
-  };
+    })
+    return { user, session, error }
+  }
 
   public updatePassword = async (access_token: string, new_password: string) => {
     const { error, data } = await supabase.auth.api
-      .updateUser(access_token, { password: new_password });
-    return { error, data };
-  };
+      .updateUser(access_token, { password: new_password })
+    return { error, data }
+  }
 
   public signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      this.user.next(null);
+    const { error } = await supabase.auth.signOut()
+    if (error == null) {
+      this.user.next(null)
     }
-    return { error };
-  };
+    return { error }
+  }
 
   public getProfile = async () => {
     return await supabase
       .from('profiles')
       .select('*')
       .eq('id', this._user?.id)
-      .single();
-  };
+      .single()
+  }
 }
