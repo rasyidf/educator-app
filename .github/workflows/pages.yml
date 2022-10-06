@@ -24,7 +24,7 @@ jobs:
     - name: Build
       run: |
         CI=false pnpm run deploy
-        ls build
+        ls dist
 
     - name: Deploy
       uses: ftnext/action-push-ghpages@v1.0.0
