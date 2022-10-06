@@ -15,7 +15,7 @@ const nameToHeader: Record<string, string> = {
   material: 'Materi Ajar',
   evaluasi: 'Alat Evaluasi',
   media: 'Media Ajar'
-}
+};
 const Page: React.FC = () => {
   const [courseList, setCourseList] = useState<any[]>([]);
   const [parentcourse, setCourse] = useState<any>({});
@@ -26,7 +26,7 @@ const Page: React.FC = () => {
     // })
   }, []);
 
-  const { id, names } = useParams<{ id: string; names: string; }>();
+  const { id, name: names } = useParams<{ id: string; name: string; }>();
 
   useEffect(() => {
     void sbDataService.getFilterRow('courses', 'id', id).then((data) => {
@@ -55,14 +55,14 @@ const Page: React.FC = () => {
 
               return (
                 <a key={course.id} href={buildWhatsappBot(parentcourse, course, names)}>
-                  <div className="course-card">
-                    <div className="course-card-image">
+                  <div className="subcourse-card">
+                    <div className="subcourse-card-image">
                       {course.subcourse_image && <img src={course.course_image} alt={course.course_name} />}
                     </div>
-                    <div className="course-card-content">
+                    <div className="subcourse-card-content">
                       <h1>{course.subcourse_name}</h1>
                       <p>{course.subcourse_description}</p>
-                      <h3>{course.subcourse_price}</h3>
+                      <h3>Rp. {course.subcourse_price}</h3>
                     </div>
                   </div>
                 </a>
@@ -85,9 +85,9 @@ const Page: React.FC = () => {
   );
 };
 
-function buildWhatsappBot(parentcourse: any, course: any, name:string): string | undefined {
+function buildWhatsappBot(parentcourse: any, course: any, name: string): string | undefined {
   const url = 'https://wa.me/6285330121887?text=';
-  const message = `Halo, saya tertarik dengan produk ${nameToHeader[name]} ${course.subcourse_name} di ${parentcourse.course_name} dengan harga ${course.subcourse_price}.`;
+  const message = `Halo, saya tertarik dengan produk ${nameToHeader[name]}\n\n Tema: ${course.subcourse_name} \n Mapel: ${parentcourse.course_name}\n Harga: Rp. ${course.subcourse_price}.`;
   return url + encodeURIComponent(message);
 }
 
