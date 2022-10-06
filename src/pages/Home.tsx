@@ -12,12 +12,7 @@ import './Home.scss'
 
 import styles from './Home.module.scss'
 const supabaseAuthService = new SupabaseAuthService()
-// const nameToHeader: Record<string, string> = {
-//   rpp: 'Rencana Pelaksanaan Pembelajaran',
-//   material: 'Materi Ajar',
-//   evaluasi: 'Alat Evaluasi',
-//   media: 'Media Ajar'
-// }
+
 const roleToString: Record<string, string> = {
   0: 'Administrator',
   1: 'Sekolah Dasar',

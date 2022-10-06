@@ -23,11 +23,11 @@ jobs:
         CI=false pnpm i
     - name: Build
       run: |
-        CI=false ionic build --prod -- --base-href 'https://rasyid.dev/educator-app/'
+        CI=false pnpm run deploy
         ls build
 
     - name: Deploy
       uses: ftnext/action-push-ghpages@v1.0.0
       with:
-        build_dir: build
+        build_dir: dist
         github_token: ${{ secrets.GITHUB_TOKEN  }} 

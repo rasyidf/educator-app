@@ -6,7 +6,7 @@ import {
 import { checkmark } from 'ionicons/icons'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import './ResetPassword.css'
+import './ResetPassword.scss'
 
 import { useParams } from 'react-router'
 import { SupabaseAuthService } from '../services/supabase.auth.service'
