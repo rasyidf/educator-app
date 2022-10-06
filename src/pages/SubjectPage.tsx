@@ -86,7 +86,7 @@ const Page: React.FC = () => {
 };
 
 function buildWhatsappBot(parentcourse: any, course: any, name: string): string | undefined {
-  const url = 'https://wa.me/6285330121887?text=';
+  const url = 'https://wa.me/6281215308292?text=';
   const message = `Halo, saya tertarik dengan produk ${nameToHeader[name]}\n\n Tema: ${course.subcourse_name} \n Mapel: ${parentcourse.course_name}\n Harga: Rp. ${course.subcourse_price}.`;
   return url + encodeURIComponent(message);
 }
