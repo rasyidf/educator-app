@@ -39,11 +39,11 @@ const HomePage: React.FC = () => {
     )
   })
 
-  useEffect(() => {
-    if (profile.user_role === '') {
-      router.push('/login')
-    }
-  }, [profile, router])
+  // useEffect(() => {
+  //   if (profile.user_role === '') {
+  //     router.push('/login')
+  //   }
+  // }, [profile, router])
 
   return (
     <IonPage>
