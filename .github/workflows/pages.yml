@@ -25,6 +25,18 @@ jobs:
       run: |
         CI=false pnpm run deploy
         ls dist
+    - uses: DamianReeves/write-file-action@master
+      with:
+        path: dist/.nojekyll
+        contents: |
+          No Jekyll
+        write-mode: append
+    - uses: DamianReeves/write-file-action@master
+      with:
+        path: dist/CNAME
+        contents: |
+          educator-u.my.id
+        write-mode: append
 
     - name: Deploy
       uses: ftnext/action-push-ghpages@v1.0.0
