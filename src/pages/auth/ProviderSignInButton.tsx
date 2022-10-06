@@ -2,7 +2,7 @@ import { IonButton, IonIcon } from '@ionic/react'
 import { Provider } from '@supabase/gotrue-js'
 import { addIcons } from 'ionicons'
 import { logoGoogle } from 'ionicons/icons'
-import { SupabaseAuthService } from '../services/supabase.auth.service'
+import { SupabaseAuthService } from '../../services/supabase.auth.service'
 import './ProviderSignInButton.scss'
 
 interface ContainerProps {

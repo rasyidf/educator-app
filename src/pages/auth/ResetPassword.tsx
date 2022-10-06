@@ -9,9 +9,9 @@ import { useHistory } from 'react-router-dom'
 import './ResetPassword.scss'
 
 import { useParams } from 'react-router'
-import { SupabaseAuthService } from '../services/supabase.auth.service'
+import { SupabaseAuthService } from '../../services/supabase.auth.service'
 
-import { StartupService } from '../services/startup.service'
+import { StartupService } from '../../services/startup.service'
 const startupService = new StartupService()
 const defaultRoute = startupService.getDefaultRoute()
 

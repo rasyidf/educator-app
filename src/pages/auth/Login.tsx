@@ -4,11 +4,11 @@ import styles from './Login.module.scss'
 import { Player } from '@lottiefiles/react-lottie-player'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { Action } from '../components/Action'
-import CustomField from '../components/CustomField'
-import { useLoginFields } from '../data/fields'
-import { validateForm } from '../data/utils'
-import { SupabaseAuthService } from '../services/supabase.auth.service'
+import { Action } from '../../components/Action'
+import CustomField from '../../components/CustomField'
+import { useLoginFields } from '../../data/fields'
+import { validateForm } from '../../data/utils'
+import { SupabaseAuthService } from '../../services/supabase.auth.service'
 const supabaseAuthService = new SupabaseAuthService()
 
 const Login = () => {

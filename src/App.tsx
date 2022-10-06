@@ -2,7 +2,7 @@ import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/r
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
-import Login from './Login/Login';
+import Login from './pages/auth/Login';
 import Page from './pages/Page';
 
 /* Core CSS required for Ionic components to work properly */
@@ -24,8 +24,8 @@ import '@ionic/react/css/text-transformation.css';
 /* Theme variables */
 import './theme/variables.scss';
 
-import ResetPassword from './Login/ResetPassword';
-import Signup from './Login/Signup';
+import ResetPassword from './pages/auth/ResetPassword';
+import Signup from './pages/auth/Signup';
 import { AccountPage } from './pages/Account';
 import HomePage from './pages/Home';
 import ProductPage from './pages/ProductPage';

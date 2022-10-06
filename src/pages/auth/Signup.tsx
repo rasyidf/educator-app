@@ -4,11 +4,11 @@ import styles from './Signup.module.scss'
 import { arrowBack, bookOutline } from 'ionicons/icons'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { Action } from '../components/Action'
-import CustomField from '../components/CustomField'
-import { useSignupFields } from '../data/fields'
-import { validateForm } from '../data/utils'
-import { SupabaseAuthService } from '../services/supabase.auth.service'
+import { Action } from '../../components/Action'
+import CustomField from '../../components/CustomField'
+import { useSignupFields } from '../../data/fields'
+import { validateForm } from '../../data/utils'
+import { SupabaseAuthService } from '../../services/supabase.auth.service'
 const supabaseAuthService = new SupabaseAuthService()
 
 const Signup = () => {
