@@ -1,43 +1,43 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react'
+import { IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 // import { User } from '@supabase/supabase-js'
-import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
-import materi from '../assets/bahanrion.png'
-import rpp from '../assets/book.jpg'
-import evals from '../assets/evaluasion.png'
-import mediaajar from '../assets/komputerion.png'
-import logo from '../assets/nos.jpg'
-import { SupabaseAuthService } from '../services/supabase.auth.service'
-import './Home.scss'
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import materi from '../assets/bahanrion.png';
+import rpp from '../assets/book.jpg';
+import evals from '../assets/evaluasion.png';
+import mediaajar from '../assets/komputerion.png';
+import logo from '../assets/nos.jpg';
+import { SupabaseAuthService } from '../services/supabase.auth.service';
+import './Home.scss';
 
-import styles from './Home.module.scss'
-const supabaseAuthService = new SupabaseAuthService()
+import styles from './Home.module.scss';
+const supabaseAuthService = new SupabaseAuthService();
 
 const roleToString: Record<string, string> = {
   0: 'Administrator',
   1: 'Sekolah Dasar',
   2: 'Sekolah Menengah Pertama',
   3: 'Sekolah Menengah Atas'
-}
+};
 const HomePage: React.FC = () => {
-  const [role, setRole] = useState('')
-  const router = useHistory()
+  const [role, setRole] = useState('');
+  const router = useHistory();
   const [profile, setProfile] = useState({
     username: '',
     website: '',
     avatar_url: '',
     user_role: ''
-  })
+  });
   useIonViewWillEnter(() => {
     void supabaseAuthService.getProfile().then(
       (data) => {
         if (data != null) {
-          setProfile({ ...data, user_role: roleToString[data?.user_role] })
-          setRole(data?.user_role)
+          setProfile({ ...data, user_role: roleToString[data?.user_role] });
+          setRole(data?.user_role);
         }
       }
-    )
-  })
+    );
+  });
 
   // useEffect(() => {
   //   if (profile.user_role === '') {
@@ -58,16 +58,15 @@ const HomePage: React.FC = () => {
           <img src={logo} alt="logo" width={128} style={{ margin: 16 }} />
           <h1>Educator</h1>
         </IonCard>
-        {profile?.username && (
-          <IonCard routerLink="/account">
-            <IonCardHeader>
-              <h1>Selamat datang {profile.username}</h1>
-            </IonCardHeader>
-            <IonCardContent>
-              <p>Anda Masuk sebagai {role}</p>
-            </IonCardContent>
-          </IonCard>)
-        }
+
+        <IonCard routerLink="/account">
+          <IonCardHeader>
+            <h1>Selamat datang {profile.username}</h1>
+          </IonCardHeader>
+          <IonCardContent>
+            <p>Anda Masuk sebagai {role}</p>
+          </IonCardContent>
+        </IonCard>
         <IonGrid fixed className="main-grid">
           <IonRow>
             <IonCol>
@@ -116,7 +115,7 @@ const HomePage: React.FC = () => {
         </IonGrid>
       </IonContent>
     </IonPage>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

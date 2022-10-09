@@ -9,6 +9,7 @@ import CustomField from '../../components/CustomField'
 import { useLoginFields } from '../../data/fields'
 import { validateForm } from '../../data/utils'
 import { SupabaseAuthService } from '../../services/supabase.auth.service'
+import ProviderSignInButton from './ProviderSignInButton';
 const supabaseAuthService = new SupabaseAuthService()
 
 const Login = () => {
@@ -79,12 +80,17 @@ const Login = () => {
 
                             <IonButton expand="block" fill="clear" onClick={login}>Login</IonButton>
                         </IonCol>
+                        <IonCol>
+                          <ProviderSignInButton name='Google' />
+                        </IonCol>
                     </IonRow>
+
                     <IonRow className="ion-margin-top ion-padding-top">
                         <IonCol size="12">
                             <Action message="Belum punya akun?" text="Daftar" link="/signup" />
                         </IonCol>
                     </IonRow>
+
                 </IonGrid>
             </IonContent>
 
