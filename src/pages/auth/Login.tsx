@@ -1,19 +1,19 @@
-import { IonButton, IonCardTitle, IonCol, IonContent, IonGrid, IonPage, IonRow, useIonRouter, useIonToast } from '@ionic/react'
-import styles from './Login.module.scss'
+import { IonButton, IonCardTitle, IonCol, IonContent, IonGrid, IonPage, IonRow, useIonRouter, useIonToast } from '@ionic/react';
+import styles from './Login.module.scss';
 
-import { Player } from '@lottiefiles/react-lottie-player'
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
-import { Action } from '../../components/Action'
-import CustomField from '../../components/CustomField'
-import { useLoginFields } from '../../data/fields'
-import { validateForm } from '../../data/utils'
-import { SupabaseAuthService } from '../../services/supabase.auth.service'
+import { Player } from '@lottiefiles/react-lottie-player';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { Action } from '../../components/Action';
+import CustomField from '../../components/CustomField';
+import { useLoginFields } from '../../data/fields';
+import { validateForm } from '../../data/utils';
+import { SupabaseAuthService } from '../../services/supabase.auth.service';
 import ProviderSignInButton from './ProviderSignInButton';
-const supabaseAuthService = new SupabaseAuthService()
+const supabaseAuthService = new SupabaseAuthService();
 
 const Login = () => {
-  const [present, dismiss] = useIonToast()
+  const [present, dismiss] = useIonToast();
   const toast = (message: string, color: string = 'danger') => {
     present({
       color,
@@ -23,79 +23,90 @@ const Login = () => {
       duration: 6000,
       onDidDismiss: () => console.log('dismissed')
       // onWillDismiss: () => console.log('will dismiss'),
-    })
-  }
+    });
+  };
 
-  const params = useParams()
-  const router = useIonRouter()
-  const fields = useLoginFields()
-  const [errors, setErrors] = useState<Record<string, any> | boolean>(false)
+  const params = useParams();
+  const router = useIonRouter();
+  const fields = useLoginFields();
+  const [errors, setErrors] = useState<Record<string, any> | boolean>(false);
   const signInWithEmail = async (email: string, password: string) => {
     const { error } =
-            await supabaseAuthService.signInWithEmail(email, password)
-    if (error != null) { toast(error.message) }
-  }
+      await supabaseAuthService.signInWithEmail(email, password);
+    if (error != null) { toast(error.message); }
+  };
   const login = () => {
-    const errors = validateForm(fields)
-    setErrors(errors)
+    const errors = validateForm(fields);
+    setErrors(errors);
 
     if (!errors.length) {
-      const emailField = fields.find(field => field.id === 'email')
-      const passwordField = fields.find(field => field.id === 'password')
-      signInWithEmail(emailField?.input?.state?.value ?? '', passwordField?.input?.state?.value ?? '')
-      router.push('/home')
+      const emailField = fields.find(field => field.id === 'email');
+      const passwordField = fields.find(field => field.id === 'password');
+      signInWithEmail(emailField?.input?.state?.value ?? '', passwordField?.input?.state?.value ?? '');
+      router.push('/home');
     }
-  }
+  };
 
   useEffect(() => {
     return () => {
-      fields.forEach(field => field.input.state.reset(''))
-      setErrors(false)
-    }
-  }, [params])
+      fields.forEach(field => field.input.state.reset(''));
+      setErrors(false);
+    };
+  }, [params]);
+
+  // useEffect, check if user is logged in, if so, redirect to home
+  useEffect(() => {
+    const user = void supabaseAuthService.getProfile().then(
+      (user) => {
+        if (user) {
+          router.push('/home');
+        }
+      }
+    );
+  }, []);
 
   return (
-        <IonPage className={styles.loginPage}>
-            <IonContent fullscreen>
-                <IonGrid className="ion-padding">
-                    <IonRow>
-                        <IonCol size="12" className={styles.headingText}>
-                            <Player
-                                autoplay
-                                src="https://assets3.lottiefiles.com/packages/lf20_4XmSkB.json"
-                                style={{ height: '200px', width: '300px' }}
-                            >
-                            </Player>
-                            <IonCardTitle>Masuk</IonCardTitle>
-                            <h5>Selamat datang di Educator</h5>
-                        </IonCol>
-                    </IonRow>
+    <IonPage className={styles.loginPage}>
+      <IonContent fullscreen>
+        <IonGrid className="ion-padding">
+          <IonRow>
+            <IonCol size="12" className={styles.headingText}>
+              <Player
+                autoplay
+                src="https://assets3.lottiefiles.com/packages/lf20_4XmSkB.json"
+                style={{ height: '200px', width: '300px' }}
+              >
+              </Player>
+              <IonCardTitle>Masuk</IonCardTitle>
+              <h5>Selamat datang di Educator</h5>
+            </IonCol>
+          </IonRow>
 
-                    <IonRow className="ion-margin-top ion-padding-top">
-                        <IonCol size="12">
+          <IonRow className="ion-margin-top ion-padding-top">
+            <IonCol size="12">
 
-                            {fields.map(field => {
-                              return <CustomField key={field.id} field={field} errors={errors} />
-                            })}
+              {fields.map(field => {
+                return <CustomField key={field.id} field={field} errors={errors} />;
+              })}
 
-                            <IonButton expand="block" fill="clear" onClick={login}>Login</IonButton>
-                        </IonCol>
-                        <IonCol>
-                          <ProviderSignInButton name='Google' />
-                        </IonCol>
-                    </IonRow>
+              <IonButton expand="block" fill="clear" onClick={login}>Login</IonButton>
+            </IonCol>
+            <IonCol>
+              <ProviderSignInButton name='Google' />
+            </IonCol>
+          </IonRow>
 
-                    <IonRow className="ion-margin-top ion-padding-top">
-                        <IonCol size="12">
-                            <Action message="Belum punya akun?" text="Daftar" link="/signup" />
-                        </IonCol>
-                    </IonRow>
+          <IonRow className="ion-margin-top ion-padding-top">
+            <IonCol size="12">
+              <Action message="Belum punya akun?" text="Daftar" link="/signup" />
+            </IonCol>
+          </IonRow>
 
-                </IonGrid>
-            </IonContent>
+        </IonGrid>
+      </IonContent>
 
-        </IonPage>
-  )
-}
+    </IonPage>
+  );
+};
 
-export default Login
+export default Login;

@@ -1,0 +1,20 @@
+span.price {
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: 700;
+    /* align right */
+    float: right;
+}
+
+.details {
+    /* align left */ 
+    font-size: 1.2rem;
+    /* font line height */
+    line-height: 1.5;
+}
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    /* align left */
+    float: left;
+}

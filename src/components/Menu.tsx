@@ -21,14 +21,14 @@ import './Menu.scss'
 
 const supabaseAuthService = new SupabaseAuthService()
 
-interface AppPage {
+interface Appcourse {
   url: string
   iosIcon: string
   mdIcon: string
   title: string
 }
 
-const appPages: AppPage[] = [
+const appcourses: Appcourse[] = [
   {
     title: 'Home',
     url: '/home',
@@ -37,25 +37,25 @@ const appPages: AppPage[] = [
   },
   {
     title: 'Media Ajar',
-    url: '/page/media',
+    url: '/course/media',
     iosIcon: fileTrayStackedOutline,
     mdIcon: fileTrayStackedOutline
   },
   {
     title: 'Alat Evaluasi',
-    url: '/page/evaluasi',
+    url: '/course/evaluasi',
     iosIcon: fileTrayOutline,
     mdIcon: fileTrayOutline
   },
   {
     title: 'RPP',
-    url: '/page/rpp',
+    url: '/course/rpp',
     iosIcon: bookOutline,
     mdIcon: bookOutline
   },
   {
     title: 'Materi Ajar',
-    url: '/page/material',
+    url: '/course/material',
     iosIcon: archiveOutline,
     mdIcon: archiveOutline
   }
@@ -93,12 +93,12 @@ const Menu: React.FC = () => {
         <IonList id="inbox-list">
           <IonListHeader>Educator</IonListHeader>
           <IonNote>{email}</IonNote>
-          {appPages.map((appPage, index) => {
+          {appcourses.map((appcourse, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
+                <IonItem className={location.pathname === appcourse.url ? 'selected' : ''} routerLink={appcourse.url} routerDirection="none" lines="none" detail={false}>
+                  <IonIcon slot="start" ios={appcourse.iosIcon} md={appcourse.mdIcon} />
+                  <IonLabel>{appcourse.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             )

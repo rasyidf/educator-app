@@ -26,7 +26,7 @@ const Page: React.FC = () => {
     // })
   }, []);
 
-  const { id, name: names } = useParams<{ id: string; name: string; }>();
+  const { id, name: names } = useParams<{ id: string; name: string;  }>();
 
   useEffect(() => {
     void sbDataService.getFilterRow('courses', 'id', id).then((data) => {
@@ -54,7 +54,7 @@ const Page: React.FC = () => {
             ? courseList.map((course) => {
 
               return (
-                <a key={course.id} href={buildWhatsappBot(parentcourse, course, names)}>
+                <Link key={course.id} to={`/product/${names}/${id}/${course.id}`}>
                   <div className="subcourse-card">
                     <div className="subcourse-card-image">
                       {course.subcourse_image && <img src={course.course_image} alt={course.course_name} />}
@@ -65,7 +65,7 @@ const Page: React.FC = () => {
                       <h3>Rp. {course.subcourse_price}</h3>
                     </div>
                   </div>
-                </a>
+                </Link>
               );
             })
             : (<>
@@ -85,10 +85,5 @@ const Page: React.FC = () => {
   );
 };
 
-function buildWhatsappBot(parentcourse: any, course: any, name: string): string | undefined {
-  const url = 'https://wa.me/6281215308292?text=';
-  const message = `Halo, saya tertarik dengan produk ${nameToHeader[name]}\n\n Tema: ${course.subcourse_name} \n Mapel: ${parentcourse.course_name}\n Harga: Rp. ${course.subcourse_price}.`;
-  return url + encodeURIComponent(message);
-}
 
 export default Page;

@@ -48,7 +48,7 @@ const Page: React.FC = () => {
           courseList.length > 0
             ? courseList.map((course) => {
               return (
-                <Link key={course.id} to={`${name}/${course.id as string}`}>
+                <Link key={course.id} to={`/subcourse/${name}/${course.id as string}`}>
                   <div className="course-card">
                     <div className="course-card-image">
                       {course.course_image && <img src={course.course_image} alt={course.course_name} />}

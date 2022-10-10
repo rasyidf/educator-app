@@ -84,7 +84,7 @@ const Signup = () => {
                 return <CustomField key={field.id} field={field} errors={errors} />
               })}
 
-              <IonButton className="custom-button" expand="block" onClick={createAccount}>Buat Akun</IonButton>
+              <IonButton color={"light"} expand="block" onClick={createAccount}>Buat Akun</IonButton>
             </IonCol>
           </IonRow>
           <IonRow className="ion-margin-top ion-padding-top">

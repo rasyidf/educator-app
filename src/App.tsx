@@ -43,19 +43,19 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
-              <Redirect to={'/home'} />
+              <Redirect to={'/login'} />
             </Route>
             <Route path="/home" exact={true}>
               <HomePage />
             </Route>
-            <Route path="/page/:name/:id/:prodId" exact={true}>
-              <ProductPage />
-            </Route>
-            <Route path="/page/:name/:id" exact={true}>
+            <Route path="/subcourse/:name/:id" exact={true}>
               <SubjectPage />
             </Route>
-            <Route path="/page/:name" exact={true}>
+            <Route path="/course/:name" exact={true}>
               <Page />
+            </Route>
+            <Route path="/product/:name/:id/:subjectId" exact={true}>
+              <ProductPage />
             </Route>
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
