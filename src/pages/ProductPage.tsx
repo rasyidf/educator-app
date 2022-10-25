@@ -85,7 +85,7 @@ const ProductPage = () => {
         {/* Ionic Floating Button with label: Beli */}
         <div className={styles.fab}>
           <IonFab vertical="bottom" horizontal="end" slot="fixed">
-            <IonFabButton color="primary" routerLink={buildWhatsappBot(product, course, subject)}>
+            <IonFabButton target="_black" color="primary" href={buildWhatsappBot(product, course, subject)}>
               Beli
             </IonFabButton>
           </IonFab>
