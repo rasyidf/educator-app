@@ -2,12 +2,13 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import { Player } from '@lottiefiles/react-lottie-player';
 import { User } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { SupabaseAuthService } from '../services/supabase.auth.service';
 
 import { Link } from 'react-router-dom';
 import { SupabaseDataService } from '../services/supabase.data.service';
 import './SubjectPage.scss';
+import { roleToString } from './roleToString';
 const sbDataService = new SupabaseDataService();
 const supabaseAuthService = new SupabaseAuthService();
 const nameToHeader: Record<string, string> = {
@@ -17,6 +18,16 @@ const nameToHeader: Record<string, string> = {
   media: 'Media Ajar'
 };
 const Page: React.FC = () => {
+
+  let _user: User | null = null;
+  const [role, setRole] = useState('');
+  const router = useHistory();
+  const [profile, setProfile] = useState({
+    username: '',
+    website: '',
+    avatar_url: '',
+    user_role: ''
+  });
   const [courseList, setCourseList] = useState<any[]>([]);
   const [parentcourse, setCourse] = useState<any>({});
   useEffect(() => {
@@ -26,7 +37,7 @@ const Page: React.FC = () => {
     // })
   }, []);
 
-  const { id, name: names } = useParams<{ id: string; name: string;  }>();
+  const { id, name: names } = useParams<{ id: string; name: string; }>();
 
   useEffect(() => {
     void sbDataService.getFilterRow('courses', 'id', id).then((data) => {
@@ -40,6 +51,27 @@ const Page: React.FC = () => {
       }
     });
   }, [id]);
+
+  useEffect(() => {
+    // Only run this one time!  No multiple subscriptions!
+    supabaseAuthService.user.subscribe((user: User | null) => {
+
+      _user = user;
+      if (_user?.id) {
+        supabaseAuthService.getProfile().then(({ data, error }) => {
+          if (error) {
+            console.log(error);
+          }
+          setProfile({ ...data, user_role: roleToString[data?.user_role] });
+          setRole(roleToString[data.user_role]);
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+        router.push('/login');
+      }
+    });
+  }, []); // <-- empty dependency array
 
   return (
     <IonPage>

@@ -4,6 +4,8 @@ import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Login from './pages/auth/Login';
 import Page from './pages/Page';
+import "@fontsource/lato";
+import "@fontsource/montserrat";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -43,7 +45,7 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
-              <Redirect to={'/login'} />
+              <Redirect to={'/home'} />
             </Route>
             <Route path="/home" exact={true}>
               <HomePage />

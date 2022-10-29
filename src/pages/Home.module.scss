@@ -4,8 +4,48 @@
     align-items: center;
 
     h1 {
-        font-family: "Lato", sans-serif;
+        font-family: Montserrat, sans-serif;
         font-size: 2rem;
         margin: 0;
+    }
+}
+
+.image {
+    margin: 5px;
+    width: 64px;
+    height: 64px;
+}
+
+.pengunjung {
+    // text header 1
+    font-family: "Lato", sans-serif;
+    font-size: 1.5rem;
+    margin: 0;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.role {
+    // text subtitle
+    font-family: "Lato", sans-serif;
+    font-size: 0.75rem;
+    margin: 6p;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    font-weight: 300;
+    color: #9e9e9e;
+}
+
+.mainGrid {
+    display: grid; 
+    grid-gap: 20px;
+    padding: 20px;  
+    ion-card {
+        // card button with center aligned text and icon
+        @apply text-center align-bottom h-full;
+
+        h1 {
+            @apply text-lg text-gray-600;
+        }
     }
 }

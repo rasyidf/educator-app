@@ -14,6 +14,8 @@ specifiers:
   '@capacitor/haptics': 4.0.1
   '@capacitor/keyboard': 4.0.1
   '@capacitor/status-bar': 4.0.1
+  '@fontsource/lato': ^4.5.10
+  '@fontsource/montserrat': ^4.5.13
   '@ionic/react': ^6.0.0
   '@ionic/react-router': ^6.0.0
   '@lottiefiles/react-lottie-player': ^3.4.7
@@ -69,6 +71,8 @@ dependencies:
   '@capacitor/haptics': 4.0.1_@capacitor+core@4.2.0
   '@capacitor/keyboard': 4.0.1_@capacitor+core@4.2.0
   '@capacitor/status-bar': 4.0.1_@capacitor+core@4.2.0
+  '@fontsource/lato': 4.5.10
+  '@fontsource/montserrat': 4.5.13
   '@ionic/react': 6.3.0_biqbaboplfbrettd7655fr4n2y
   '@ionic/react-router': 6.3.0_lrmp3soklbeidbetlzp5p4lxwi
   '@lottiefiles/react-lottie-player': 3.4.7_react@18.2.0
@@ -526,6 +530,14 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@fontsource/lato/4.5.10:
+    resolution: {integrity: sha512-2hYR6r661Cq9B8zugtu6yxuOKqrVhAgfOSaPSq8XoxbC4ebsl0KOTy/vPoP+9U7JuQVLfrmikirW4a9Z0nDUug==}
+    dev: false
+
+  /@fontsource/montserrat/4.5.13:
+    resolution: {integrity: sha512-/XlcNsMFjdWX4Away8Ax/4NgND8Ckk9gVDwgz1sfxF6h+gFHChLOV0IvPrUfCQjZ1F35igg+nR9bSxmjsYEskQ==}
+    dev: false
 
   /@ionic/cli-framework-output/2.2.5:
     resolution: {integrity: sha512-YeDLTnTaE6V4IDUxT8GDIep0GuRIFaR7YZDLANMuuWJZDmnTku6DP+MmQoltBeLmVvz1BAAZgk41xzxdq6H2FQ==}

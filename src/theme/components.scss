@@ -25,3 +25,22 @@ ion-item {
     }
     --border-color: transparent;
 }
+
+ion-searchbar.custom {
+    --background: #f5f8f6;
+    --color: rgb(61, 60, 60);
+    --placeholder-color: rgb(78, 77, 77);
+    --icon-color: rgb(58, 56, 56);
+    --clear-button-color: #fff;
+  
+    --border-radius: 8px;
+    --box-shadow: none;
+  }
+  
+  ion-searchbar.ios.custom {
+    --cancel-button-color: #19422d;
+  }
+  
+  ion-searchbar.md.custom {
+    --cancel-button-color: rgb(17, 15, 15);
+  }

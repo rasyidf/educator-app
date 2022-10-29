@@ -74,6 +74,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --border-radius: 6px;
 }
 
 // @media (prefers-color-scheme: dark) {
@@ -234,5 +236,7 @@ http://ionicframework.com/docs/theming/ */
 //     --ion-card-background: #1e1e1e;
 //   }
 // }
+
+
 
 @import "components";
