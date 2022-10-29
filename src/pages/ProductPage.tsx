@@ -1,4 +1,4 @@
-import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, span, IonPage, IonGrid, IonCol, IonRow, IonImg, IonFab, IonFabButton, IonIcon } from "@ionic/react";
+import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonPage, IonGrid, IonCol, IonRow, IonImg, IonFab, IonFabButton, IonIcon } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { SupabaseDataService } from "../services/supabase.data.service";
