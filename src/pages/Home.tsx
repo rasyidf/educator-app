@@ -1,4 +1,4 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonList, IonModal, IonPage, IonRow, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonList, IonModal, IonPage, IonRow, IonSearchbar, IonText, IonThumbnail, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 // import { User } from '@supabase/supabase-js'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -14,7 +14,7 @@ import { SupabaseAuthService } from '../services/supabase.auth.service';
 import './Home.scss';
 
 import styles from './Home.module.scss';
-import { personCircle } from 'ionicons/icons';
+import { personCircle, searchSharp } from 'ionicons/icons';
 import { User } from '@supabase/gotrue-js';
 import { roleToString, stringToRole } from './roleToString';
 const supabaseAuthService = new SupabaseAuthService();
@@ -55,8 +55,6 @@ const HomePage: React.FC = () => {
         }).catch((err) => {
           console.log(err);
         });
-      } else {
-        router.push('/login');
       }
     });
   }, []); // <-- empty dependency array
@@ -80,26 +78,23 @@ const HomePage: React.FC = () => {
   return (
     <IonPage>
 
+      <IonHeader collapse="condense">
+        <IonToolbar>
+          <IonTitle size="large">Home</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent fullscreen className="ion-padding">
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Home</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonCard className={styles.Header}>
-          <img src={logo} alt="logo" width={128} style={{ margin: 16 }} />
+        <div className={styles.Header}>
+          <IonImg src={logo} alt="logo" className={styles.image} />
           <h1>Educator</h1>
-        </IonCard>
+        </div>
+        <IonText onClick={() => modal.current?.present()}>
+          <h2 className={styles.pengunjung}>Hallo {profile?.username || "Pengunjung"}</h2>
+          <p className={styles.role}>Anda masuk sebagai {role || "guest"}</p>
+        </IonText>
+        <IonSearchbar disabled className='custom' show-clear-button="focus" searchIcon={searchSharp} placeholder="Cari" animated></IonSearchbar>
 
-        <IonCard routerLink="/account">
-          <IonCardHeader>
-            <h1>Selamat datang {profile.username}</h1>
-          </IonCardHeader>
-          <IonCardContent>
-            <p>Anda Masuk sebagai {role}</p>
-          </IonCardContent>
-        </IonCard>
-        <IonGrid fixed className="main-grid">
+        <IonGrid fixed className={styles.mainGrid}>
           <IonRow>
             <IonCol>
               <IonCard routerLink="/course/media">
@@ -151,16 +146,16 @@ const HomePage: React.FC = () => {
             <p>Anda belum memilih jenjang pendidikan, silahkan pilih salah satu</p>
 
             <IonList lines="none">
-              <IonItem button={true} detail={false} onClick={() => changeRole("1")}>
-                <IonImg src={SDImg} />
+              <IonItem button detail={false} onClick={() => changeRole("1")}>
+                <IonImg src={SDImg} slot="start" />
                 <IonLabel>Sekolah Dasar</IonLabel>
               </IonItem>
-              <IonItem button={true} detail={false} onClick={() => changeRole("2")}>
-                <IonImg src={SMPImg} />
+              <IonItem button detail={false} onClick={() => changeRole("2")}>
+                <IonImg src={SMPImg} slot="start" />
                 <IonLabel>Sekolah Menengah Pertama</IonLabel>
               </IonItem>
-              <IonItem button={true} detail={false} onClick={() => changeRole("3")}>
-                <IonImg src={SMAImg} />
+              <IonItem button detail={false} onClick={() => changeRole("3")}>
+                <IonImg src={SMAImg} slot="start" />
                 <IonLabel>Sekolah Menengah Atas</IonLabel>
               </IonItem>
             </IonList>
