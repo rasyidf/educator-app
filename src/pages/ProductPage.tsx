@@ -1,12 +1,12 @@
 import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, span, IonPage, IonGrid, IonCol, IonRow, IonImg, IonFab, IonFabButton, IonIcon } from "@ionic/react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { SupabaseDataService } from "../services/supabase.data.service";
 import styles from "./ProductPage.module.css";
 
 const sbDataService = new SupabaseDataService();
 const ProductPage = () => {
-
+  const router = useHistory();
   const [subject, setSubject] = useState<any>({});
   const [course, setCourse] = useState<any>({});
   const [product, setProduct] = useState<any>({});
@@ -31,15 +31,24 @@ const ProductPage = () => {
     });
 
     void sbDataService.getFilterRows("products", "subcourse_id", subjectId).then((data) => {
-      console.log(data);
-      if (data?.data) {
-        // find product by category name
-        const prod = data?.data?.find((prods: any) => (prods.product_type as string).toUpperCase() === names.toUpperCase());
-        setProduct(prod);
+
+      const datas = data?.data;
+      console.log(datas);
+      if (datas) {
+        // find product by category name 
+        const product = datas.find((item: product) => {
+          const isSelected = item.product_type.toLocaleLowerCase() === names.toLocaleLowerCase();
+          return isSelected;
+        });
+        setProduct(product);
+        if (!product) {
+          console.log("product not found");
+          router.push("/");
+        }
       }
     });
   }, []);
-
+  console.log("product", product);
   return (
     <IonPage>
       <IonContent>
@@ -55,13 +64,13 @@ const ProductPage = () => {
               </IonRow>
               <IonRow>
                 <IonCol size="6">
-                  <span className={styles.details}><b>Materi:</b> {course.course_name}</span><br />
-                  <span className={styles.details}><b>Tema  :</b> {subject.subcourse_name}</span><br />
-                  <span className={styles.details}><b>Jenis Berkas:</b> {product.product_type}</span>
+                  <span className={styles.details}><b>Materi:</b> {course?.course_name}</span><br />
+                  <span className={styles.details}><b>Tema  :</b> {subject?.subcourse_name}</span><br />
+                  <span className={styles.details}><b>Jenis Berkas:</b> {product?.product_type || "-"}</span>
 
                 </IonCol>
                 <IonCol size="6">
-                  <span className={styles.price}>Rp. {formatCurrency(product.product_price)}</span>
+                  <span className={styles.price}>Rp. {formatCurrency(product?.product_price || "0")}</span>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -72,14 +81,14 @@ const ProductPage = () => {
         <IonCard>
           <IonCardContent>
             <h4>Deskripsi</h4>
-            <p>{product.product_description}</p>
+            <p>{product?.product_description || ""}</p>
           </IonCardContent>
 
         </IonCard>
         <IonCard>
           <IonCardContent>
             <h4>Preview</h4>
-            <IonImg src={product.product_preview} />
+            <IonImg src={product?.product_preview || ""} />
           </IonCardContent>
         </IonCard>
         {/* Ionic Floating Button with label: Beli */}
@@ -115,8 +124,8 @@ function formatCurrency(num: any): string {
 //href={buildWhatsappBot(parentcourse, course, names)}
 function buildWhatsappBot(product: product, course: course, subcourse: subcourse): string | undefined {
   const url = 'https://wa.me/6281215308292?text=';
-  const message = `Halo, Saya tertarik dengan produk ${product.product_type}\n` +
-    `Materi: ${subcourse.subcourse_name} \n Mapel: ${course.course_name}\n Harga: Rp. ${formatCurrency(product.product_price)}.`;
+  const message = `Halo, Saya tertarik dengan produk ${product?.product_type || "-"}\n` +
+    `Materi: ${subcourse?.subcourse_name} \n Mapel: ${course?.course_name}\n Harga: Rp. ${formatCurrency(product?.product_price || "0")}.`;
   return url + encodeURIComponent(message);
 }
 type product = {
